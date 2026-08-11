@@ -40,13 +40,13 @@ const avatarFallback = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
 );
 
 const RANK_TIERS = [
-  { name: 'Bronze',      min: 0,     color: '#cd7f32' },
-  { name: 'Silber',      min: 900,   color: '#c3c9d1' },
-  { name: 'Gold',        min: 2100,  color: '#e8c34a' },
-  { name: 'Platin',      min: 3600,  color: '#3fd6c9' },
-  { name: 'Diamant',     min: 5400,  color: '#4fa8ff' },
-  { name: 'Crimson',     min: 7500,  color: '#e6483f' },
-  { name: 'Iridescent',  min: 10000, color: '#c14fe6' }
+  { key: 'Bronze',     name: 'Bronze',     min: 0,     color: '#cd7f32' },
+  { key: 'Silver',     name: 'Silber',     min: 900,   color: '#c3c9d1' },
+  { key: 'Gold',       name: 'Gold',       min: 2100,  color: '#e8c34a' },
+  { key: 'Platinum',   name: 'Platin',     min: 3600,  color: '#3fd6c9' },
+  { key: 'Diamond',    name: 'Diamant',    min: 5400,  color: '#4fa8ff' },
+  { key: 'Crimson',    name: 'Crimson',    min: 7500,  color: '#e6483f' },
+  { key: 'Iridescent', name: 'Iridescent', min: 10000, color: '#c14fe6' }
 ];
 
 function rankForSr(sr) {
@@ -56,7 +56,7 @@ function rankForSr(sr) {
   const tier = RANK_TIERS[idx];
   const next = RANK_TIERS[idx + 1];
   if (!next) {
-    return { name: tier.name, division: '', color: tier.color, nextLabel: 'Top 250 (Leaderboard)', srToNext: null };
+    return { key: tier.key, name: tier.name, division: '', color: tier.color, icon: `icons/ranks/${tier.key}.png`, nextLabel: 'Top 250 (Leaderboard)', srToNext: null };
   }
   const range = next.min - tier.min;
   const third = range / 3;
@@ -65,18 +65,8 @@ function rankForSr(sr) {
   const roman = ['I', 'II', 'III'][divIdx];
   const nextThreshold = divIdx < 2 ? tier.min + (divIdx + 1) * third : next.min;
   const nextLabel = divIdx < 2 ? `${tier.name} ${['II', 'III'][divIdx]}` : (RANK_TIERS[idx + 2] ? `${next.name} I` : next.name);
-  return { name: tier.name, division: roman, color: tier.color, nextLabel, srToNext: Math.max(0, Math.round(nextThreshold - sr)) };
-}
-
-function gemSvg(color) {
-  return `<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="50,6 84,34 68,94 32,94 16,34" fill="${color}" opacity="0.22"/>
-    <polygon points="50,6 84,34 50,46" fill="${color}" opacity="0.95"/>
-    <polygon points="50,6 16,34 50,46" fill="${color}" opacity="0.75"/>
-    <polygon points="16,34 32,94 50,46" fill="${color}" opacity="0.55"/>
-    <polygon points="84,34 68,94 50,46" fill="${color}" opacity="0.4"/>
-    <polygon points="32,94 68,94 50,46" fill="${color}" opacity="0.65"/>
-  </svg>`;
+  const icon = `icons/ranks/${tier.key}_Division_${roman}.png`;
+  return { key: tier.key, name: tier.name, division: roman, color: tier.color, icon, nextLabel, srToNext: Math.max(0, Math.round(nextThreshold - sr)) };
 }
 
 const RANK_COLORS = { DIAMOND: '#4fa8ff', PLATIN: '#3fd6c9', PLATINUM: '#3fd6c9', GOLD: '#e8c34a', SILBER: '#c3c9d1', SILVER: '#c3c9d1', BRONZE: '#cd7f32', UNRANKED: '#5a5f6b', CRIMSON: '#e6483f', IRIDESCENT: '#c14fe6' };
@@ -314,7 +304,7 @@ function render() {
   $('#rankName').textContent = rk.name.toUpperCase();
   $('#rankName').style.color = rk.color;
   $('#divisionName').textContent = rk.division ? `DIVISION ${rk.division}` : '';
-  $$('.rank-emblem').forEach(el => el.innerHTML = gemSvg(rk.color));
+  $$('.rank-emblem').forEach(el => el.innerHTML = `<img src="${rk.icon}" alt="${rk.name} ${rk.division}" onerror="this.style.display='none'"/>`);
   $('#srValue').textContent = p.sr.toLocaleString('de-DE');
   $('#srTarget').textContent = p.srTarget ? `/ ${p.srTarget.toLocaleString('de-DE')}` : '';
   const pct = p.srTarget ? Math.min(100, (p.sr / p.srTarget) * 100) : 0;
