@@ -39,7 +39,47 @@ const avatarFallback = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="100%" height="100%" fill="#20232a"/><circle cx="100" cy="78" r="38" fill="#f28c00"/><path d="M35 185c5-43 30-64 65-64s60 21 65 64" fill="#f28c00"/></svg>`
 );
 
-const RANK_COLORS = { DIAMOND: '#4fa8ff', PLATIN: '#9fb3c8', PLATINUM: '#9fb3c8', GOLD: '#f2c14e', SILBER: '#c8c8d0', SILVER: '#c8c8d0', BRONZE: '#c47a4a', UNRANKED: '#5a5f6b', CRIMSON: '#ff5c5c', IRIDESCENT: '#8b6bff' };
+const RANK_TIERS = [
+  { name: 'Bronze',      min: 0,     color: '#cd7f32' },
+  { name: 'Silber',      min: 900,   color: '#c3c9d1' },
+  { name: 'Gold',        min: 2100,  color: '#e8c34a' },
+  { name: 'Platin',      min: 3600,  color: '#3fd6c9' },
+  { name: 'Diamant',     min: 5400,  color: '#4fa8ff' },
+  { name: 'Crimson',     min: 7500,  color: '#e6483f' },
+  { name: 'Iridescent',  min: 10000, color: '#c14fe6' }
+];
+
+function rankForSr(sr) {
+  sr = Math.max(0, Number(sr) || 0);
+  let idx = 0;
+  for (let i = 0; i < RANK_TIERS.length; i++) { if (sr >= RANK_TIERS[i].min) idx = i; }
+  const tier = RANK_TIERS[idx];
+  const next = RANK_TIERS[idx + 1];
+  if (!next) {
+    return { name: tier.name, division: '', color: tier.color, nextLabel: 'Top 250 (Leaderboard)', srToNext: null };
+  }
+  const range = next.min - tier.min;
+  const third = range / 3;
+  const pos = sr - tier.min;
+  const divIdx = pos < third ? 0 : pos < 2 * third ? 1 : 2; // 0=I (entry), 1=II, 2=III (about to promote)
+  const roman = ['I', 'II', 'III'][divIdx];
+  const nextThreshold = divIdx < 2 ? tier.min + (divIdx + 1) * third : next.min;
+  const nextLabel = divIdx < 2 ? `${tier.name} ${['II', 'III'][divIdx]}` : (RANK_TIERS[idx + 2] ? `${next.name} I` : next.name);
+  return { name: tier.name, division: roman, color: tier.color, nextLabel, srToNext: Math.max(0, Math.round(nextThreshold - sr)) };
+}
+
+function gemSvg(color) {
+  return `<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="50,6 84,34 68,94 32,94 16,34" fill="${color}" opacity="0.22"/>
+    <polygon points="50,6 84,34 50,46" fill="${color}" opacity="0.95"/>
+    <polygon points="50,6 16,34 50,46" fill="${color}" opacity="0.75"/>
+    <polygon points="16,34 32,94 50,46" fill="${color}" opacity="0.55"/>
+    <polygon points="84,34 68,94 50,46" fill="${color}" opacity="0.4"/>
+    <polygon points="32,94 68,94 50,46" fill="${color}" opacity="0.65"/>
+  </svg>`;
+}
+
+const RANK_COLORS = { DIAMOND: '#4fa8ff', PLATIN: '#3fd6c9', PLATINUM: '#3fd6c9', GOLD: '#e8c34a', SILBER: '#c3c9d1', SILVER: '#c3c9d1', BRONZE: '#cd7f32', UNRANKED: '#5a5f6b', CRIMSON: '#e6483f', IRIDESCENT: '#c14fe6' };
 const rankColor = (r) => RANK_COLORS[(r || 'UNRANKED').toUpperCase()] || '#8b909c';
 
 /* ---------- First-run setup ---------- */
@@ -92,7 +132,7 @@ $('#saveMatch').onclick = () => {
     note: $('#note').value.trim().slice(0, 160),
     kills: Math.max(0, Math.trunc(Number($('#kills').value) || 0)),
     deaths: Math.max(0, Math.trunc(Number($('#deaths').value) || 0)),
-    rankAtMatch: [store.profile.rank || 'UNRANKED', store.profile.division].filter(Boolean).join(' '),
+    rankAtMatch: (() => { const rk = rankForSr(srBefore); return rk.division ? `${rk.name} ${rk.division}` : rk.name; })(),
     createdAt: new Date().toISOString()
   });
   saveStore(store);
@@ -102,8 +142,6 @@ $('#saveMatch').onclick = () => {
 
 /* ---------- Settings: profile, avatar ---------- */
 $('#saveProfile').onclick = () => {
-  store.profile.rank = $('#profileRank').value.trim().slice(0, 32);
-  store.profile.division = $('#profileDivision').value.trim().slice(0, 16);
   store.profile.sr = Math.max(0, Math.trunc(Number($('#profileSr').value) || 0));
   saveStore(store);
   toast('Profil gespeichert'); render();
@@ -272,13 +310,18 @@ function render() {
   $('#helloName').textContent = p.username;
   $('#profileName').value = p.username;
 
-  $('#rankName').textContent = p.rank || 'UNRANKED';
-  $('#divisionName').textContent = p.division ? `DIVISION ${p.division}` : '';
+  const rk = rankForSr(p.sr);
+  $('#rankName').textContent = rk.name.toUpperCase();
+  $('#rankName').style.color = rk.color;
+  $('#divisionName').textContent = rk.division ? `DIVISION ${rk.division}` : '';
+  $$('.rank-emblem').forEach(el => el.innerHTML = gemSvg(rk.color));
   $('#srValue').textContent = p.sr.toLocaleString('de-DE');
   $('#srTarget').textContent = p.srTarget ? `/ ${p.srTarget.toLocaleString('de-DE')}` : '';
   const pct = p.srTarget ? Math.min(100, (p.sr / p.srTarget) * 100) : 0;
   $('#srBar').style.width = pct + '%';
-  $('#srRemaining').textContent = p.srTarget ? `${Math.max(0, p.srTarget - p.sr)} SR bis zum Ziel` : 'Noch kein Ziel gesetzt';
+  $('#srRemaining').textContent = p.srTarget
+    ? `${Math.max(0, p.srTarget - p.sr)} SR bis zum Ziel`
+    : (rk.srToNext !== null ? `${rk.srToNext} SR bis ${rk.nextLabel}` : rk.nextLabel);
 
   const s = getStats(statRange);
   $('#todaySr').textContent = (s.today.sr >= 0 ? '+' : '') + s.today.sr;
@@ -288,8 +331,6 @@ function render() {
   $('#winrate').textContent = s.winrate.toFixed(1) + '%';
   $('#streak').textContent = '🔥 ' + s.streak;
 
-  $('#profileRank').value = p.rank;
-  $('#profileDivision').value = p.division;
   $('#profileSr').value = p.sr;
   $('#goalRankInput').value = p.goalRank || '';
   $('#goalSrInput').value = p.srTarget || '';
