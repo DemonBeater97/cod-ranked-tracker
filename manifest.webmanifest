@@ -1,0 +1,13 @@
+{
+  "name": "COD Ranked Tracker",
+  "short_name": "Ranked Tracker",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0c0f",
+  "theme_color": "#0b0c0f",
+  "description": "Ranked-SR, Matches und Statistiken auf PC und Handy tracken.",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
