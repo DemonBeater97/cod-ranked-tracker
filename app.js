@@ -117,16 +117,21 @@ $('#saveMatch').onclick = () => {
   const srBefore = Number(store.profile.sr || 0);
   const srAfter = Math.max(0, srBefore + srChange);
   store.profile.sr = srAfter;
+  const optNum = (id) => { const v = $(id).value; return v === '' ? null : Math.max(0, Math.trunc(Number(v)) || 0); };
   store.matches.unshift({
     id: uid(), result: selectedResult, srChange, srBefore, srAfter,
     note: $('#note').value.trim().slice(0, 160),
     kills: Math.max(0, Math.trunc(Number($('#kills').value) || 0)),
     deaths: Math.max(0, Math.trunc(Number($('#deaths').value) || 0)),
+    placement: optNum('#placement'),
+    damage: optNum('#damage'),
+    points: optNum('#points'),
     rankAtMatch: (() => { const rk = rankForSr(srBefore); return rk.division ? `${rk.name} ${rk.division}` : rk.name; })(),
     createdAt: new Date().toISOString()
   });
   saveStore(store);
   $('#note').value = ''; $('#kills').value = 0; $('#deaths').value = 0;
+  $('#placement').value = ''; $('#damage').value = ''; $('#points').value = '';
   toast('Match gespeichert'); render();
 };
 
@@ -238,13 +243,21 @@ function computeStats(matches) {
   const rankDistribution = Object.entries(rankCounts)
     .map(([rank, count]) => ({ rank, count, pct: matches.length ? (count / matches.length) * 100 : 0 }))
     .sort((a, b) => b.count - a.count);
+  const withPlacement = matches.filter(m => Number.isFinite(m.placement));
+  const withDamage = matches.filter(m => Number.isFinite(m.damage));
+  const withPoints = matches.filter(m => Number.isFinite(m.points));
+  const avg = (arr, key) => arr.length ? arr.reduce((s, m) => s + Number(m[key]), 0) / arr.length : null;
   return {
     total: matches.length, wins, losses,
     winrate: matches.length ? (wins / matches.length) * 100 : 0,
     avgSr: matches.length ? matches.reduce((s, m) => s + Number(m.srChange || 0), 0) / matches.length : 0,
     streak,
     kd: deaths > 0 ? kills / deaths : kills,
-    rankDistribution
+    rankDistribution,
+    avgPlacement: avg(withPlacement, 'placement'),
+    avgDamage: avg(withDamage, 'damage'),
+    avgPoints: avg(withPoints, 'points'),
+    bestPlacement: withPlacement.length ? Math.min(...withPlacement.map(m => m.placement)) : null
   };
 }
 function getStats(range) {
@@ -343,15 +356,27 @@ function renderStats() {
   $('#totalWinrate').textContent = s.winrate.toFixed(1) + '%';
   $('#avgSr').textContent = (s.avgSr >= 0 ? '+' : '') + s.avgSr.toFixed(1);
   $('#kdRatio').textContent = s.kd.toFixed(2);
+  $('#avgPlacement').textContent = s.avgPlacement !== null ? '#' + s.avgPlacement.toFixed(1) : '–';
+  $('#avgDamage').textContent = s.avgDamage !== null ? Math.round(s.avgDamage).toLocaleString('de-DE') : '–';
+  $('#avgPoints').textContent = s.avgPoints !== null ? Math.round(s.avgPoints).toLocaleString('de-DE') : '–';
+  $('#bestPlacement').textContent = s.bestPlacement !== null ? '#' + s.bestPlacement : '–';
   drawDonut(s.rankDistribution || []);
 }
 
 function renderMatches() {
+  const extra = (m) => {
+    const parts = [];
+    if (m.kills || m.deaths) parts.push(`${Number(m.kills || 0)}/${Number(m.deaths || 0)} K/D`);
+    if (Number.isFinite(m.placement)) parts.push(`Platz ${m.placement}`);
+    if (Number.isFinite(m.damage)) parts.push(`${m.damage.toLocaleString('de-DE')} Schaden`);
+    if (Number.isFinite(m.points)) parts.push(`${m.points.toLocaleString('de-DE')} Punkte`);
+    return parts.join(' · ');
+  };
   const html = store.matches.map(m => `
     <div class="match-row">
       <strong class="${m.result === 'WIN' ? 'win-t' : 'loss-t'}">${m.result}</strong>
       <strong class="${m.srChange >= 0 ? 'win-t' : 'loss-t'}">${m.srChange >= 0 ? '+' : ''}${m.srChange} SR</strong>
-      <span>${escapeHtml(m.note || '—')}${m.kills || m.deaths ? ` · ${Number(m.kills || 0)}/${Number(m.deaths || 0)} K/D` : ''}</span>
+      <span>${escapeHtml(m.note || '—')}${extra(m) ? ` · ${extra(m)}` : ''}</span>
       <small class="date">${new Date(m.createdAt).toLocaleDateString('de-DE')}</small>
       <button class="delete" data-id="${m.id}">×</button>
     </div>`).join('') || '<p style="color:var(--muted)">Noch keine Matches gespeichert.</p>';
