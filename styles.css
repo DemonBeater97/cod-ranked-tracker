@@ -69,7 +69,7 @@ button.primary:hover{filter:brightness(1.07)}
 .ghost.danger{color:var(--red);width:100%;justify-content:center;margin-top:8px}
 #logoutBtn{width:100%;justify-content:center;margin-top:10px}
 
-main{flex:1;padding:24px 28px 90px;max-width:1200px}
+main{flex:1;padding:24px 28px 90px;max-width:1200px;margin:0 auto}
 header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:12px}
 header h1{margin:2px 0 0;font-size:22px}
 header small{font-size:12px}
