@@ -661,7 +661,7 @@ function render() {
   $('#todaySr').textContent = (s.today.sr >= 0 ? '+' : '') + s.today.sr;
   $('#todaySr').style.color = s.today.sr >= 0 ? 'var(--green)' : 'var(--red)';
   $('#todayMatches').textContent = s.today.matches;
-  $('#todayWL').textContent = `${s.today.wins}W · ${s.today.losses}L`;
+  $('#todayWL').innerHTML = `<span style="color:var(--green)">${s.today.wins}W</span> · <span style="color:var(--red)">${s.today.losses}L</span>`;
   $('#winrate').textContent = s.winrate.toFixed(1) + '%';
   $('#streak').textContent = '🔥 ' + s.streak;
 

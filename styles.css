@@ -98,7 +98,7 @@ header small{font-size:12px}
 .sr-box{text-align:right;grid-column:3;grid-row:1}
 .sr-box small{font-size:14px;font-weight:700;color:#c3c8d4}
 .sr-box strong{font-size:24px;margin:0 4px}
-.sr-box span{color:var(--muted);font-size:13px}
+.sr-box span{color:#c7ccd6;font-size:14px}
 .progress-wrap{grid-column:1/4;margin-top:8px}
 .progress{height:8px;border-radius:999px;background:var(--panel-2);overflow:hidden;margin-bottom:6px}
 .progress > div{height:100%;background:linear-gradient(90deg,var(--blue),#7ecbff);border-radius:999px;width:0%;transition:width .4s ease}
@@ -113,7 +113,7 @@ header small{font-size:12px}
 .metric-grid strong{font-size:22px;display:block;color:var(--text)}
 #totalWins{color:var(--green)}
 #totalLosses{color:var(--red)}
-.metric-grid article span{font-size:11px;color:var(--muted)}
+.metric-grid article span{font-size:12px;color:#a7acb8}
 #todaySr{color:var(--green)}
 #streak{color:var(--orange)}
 #winrate,#totalWinrate,#totalMatches,#kdRatio,#avgSr{color:var(--text)}
@@ -125,7 +125,7 @@ header small{font-size:12px}
 .result{flex:1;padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--panel-2);color:var(--muted);font-weight:700;font-size:13px}
 .result.win.active{background:rgba(61,220,132,.15);border-color:var(--green);color:var(--green)}
 .result.loss.active{background:rgba(255,92,92,.15);border-color:var(--red);color:var(--red)}
-.match-panel label{display:block;font-size:11px;color:var(--muted);margin-bottom:14px}
+.match-panel label{display:block;font-size:12px;color:#a7acb8;margin-bottom:14px}
 .match-panel input{width:100%;margin-top:6px;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-alt);color:var(--text)}
 .kd-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .number-step{display:flex;align-items:center;gap:10px;margin-top:6px}
