@@ -18,10 +18,10 @@
     </div>
     <div class="auth-card">
       <form id="setupForm" class="auth-form">
-        <h1>Willkommen</h1>
-        <p>Alles wird nur lokal auf diesem Gerät gespeichert – kein Server, kein Login. Leg dir kurz ein Profil an.</p>
-        <label>Dein Name<input id="setupName" required maxlength="24" placeholder="z. B. MrMaik240" /></label>
-        <button class="primary" type="submit">Los geht's</button>
+        <h1 data-i18n="setup.title">Willkommen</h1>
+        <p data-i18n="setup.body">Alles wird nur lokal auf diesem Gerät gespeichert – kein Server, kein Login. Leg dir kurz ein Profil an.</p>
+        <label data-i18n="setup.nameLabel">Dein Name<input id="setupName" required maxlength="24" placeholder="z. B. MrMaik240" data-i18n-placeholder="setup.namePlaceholder" /></label>
+        <button class="primary" type="submit" data-i18n="setup.submit">Los geht's</button>
       </form>
     </div>
   </div>
@@ -30,86 +30,99 @@
     <aside class="sidebar">
       <div class="logo"><div class="logo-dot">◎</div><div>COD RANKED<br><span>TRACKER</span></div></div>
       <nav>
-        <button class="nav active" data-page="overview"><i class="ic">▣</i> Übersicht</button>
-        <button class="nav" data-page="matches"><i class="ic">⌘</i> Matches</button>
-        <button class="nav" data-page="history"><i class="ic">◴</i> Verlauf</button>
-        <button class="nav" data-page="stats"><i class="ic">▥</i> Statistiken</button>
-        <button class="nav" data-page="goals"><i class="ic">◎</i> Ziele</button>
-        <button class="nav" data-page="settings"><i class="ic">⚙</i> Einstellungen</button>
+        <button class="nav active" data-page="overview"><i class="ic">▣</i> <span data-i18n="nav.overview">Übersicht</span></button>
+        <button class="nav" data-page="matches"><i class="ic">⌘</i> <span data-i18n="nav.matches">Matches</span></button>
+        <button class="nav" data-page="history"><i class="ic">◴</i> <span data-i18n="nav.history">Verlauf</span></button>
+        <button class="nav" data-page="stats"><i class="ic">▥</i> <span data-i18n="nav.stats">Statistiken</span></button>
+        <button class="nav" data-page="goals"><i class="ic">◎</i> <span data-i18n="nav.goals">Ziele</span></button>
+        <button class="nav" data-page="settings"><i class="ic">⚙</i> <span data-i18n="nav.settings">Einstellungen</span></button>
       </nav>
-      <div class="sidebar-user"><img id="sideAvatar" alt="" /><div><strong id="sideName">Player</strong><small>Lokal auf diesem Gerät</small></div></div>
+      <div class="sidebar-user"><img id="sideAvatar" alt="" /><div><strong id="sideName">Player</strong><small data-i18n="sidebar.local">Lokal auf diesem Gerät</small></div></div>
     </aside>
 
     <main>
       <header>
-        <div><small>Willkommen zurück,</small><h1 id="helloName">Player</h1></div>
+        <div><small data-i18n="header.welcomeBack">Willkommen zurück,</small><h1 id="helloName">Player</h1></div>
         <div class="header-actions">
-          <button id="exportBtn" class="ghost header-btn"><i class="ic">⇩</i> Daten sichern</button>
-          <button id="settingsBtn" class="icon-btn" title="Einstellungen">⚙</button>
+          <button id="exportBtn" class="ghost header-btn"><i class="ic">⇩</i> <span data-i18n="header.backup">Daten sichern</span></button>
+          <button id="helpBtn" class="icon-btn" title="Hilfe" data-i18n-title="header.helpTitle">?</button>
+          <button id="settingsBtn" class="icon-btn" title="Einstellungen" data-i18n-title="header.settingsTitle">⚙</button>
           <button id="mobileMenu" class="mobile-menu">☰</button>
         </div>
       </header>
 
       <section id="overview" class="page active-page">
+        <div id="backupWarning" class="backup-warning hidden"></div>
         <div class="rank-card">
           <div class="rank-emblem">◆</div>
-          <div class="rank-main"><small>AKTUELLER RANK</small><h2 id="rankName">UNRANKED</h2><span id="divisionName"></span></div>
+          <div class="rank-main"><small data-i18n="overview.currentRank">AKTUELLER RANK</small><h2 id="rankName">UNRANKED</h2><span id="divisionName"></span></div>
           <div class="sr-box"><small>SR</small><strong id="srValue">0</strong><span id="srTarget">/ 0</span></div>
-          <div class="progress-wrap"><div class="progress"><div id="srBar"></div></div><small id="srRemaining">Noch kein Ziel gesetzt</small></div>
+          <div class="progress-wrap"><div class="progress"><div id="srBar"></div></div><small id="srRemaining" data-i18n="overview.noGoal">Noch kein Ziel gesetzt</small></div>
         </div>
 
-        <h3 class="section-title">HEUTE</h3>
+        <h3 class="section-title" data-i18n="overview.today">HEUTE</h3>
         <div class="metric-grid">
-          <article><small>SR HEUTE</small><strong id="todaySr">0</strong></article>
-          <article><small>MATCHES</small><strong id="todayMatches">0</strong><span id="todayWL">0W · 0L</span></article>
-          <article><small>WINRATE</small><strong id="winrate">0%</strong></article>
-          <article><small>BESTE STREAK</small><strong id="streak">0</strong><span>WIN STREAK</span></article>
+          <article><small data-i18n="overview.srToday">SR HEUTE</small><strong id="todaySr">0</strong></article>
+          <article><small data-i18n="overview.matches">MATCHES</small><strong id="todayMatches">0</strong><span id="todayWL">0W · 0L</span></article>
+          <article><small data-i18n="overview.winrate">WINRATE</small><strong id="winrate">0%</strong></article>
+          <article><small data-i18n="overview.bestStreak">BESTE STREAK</small><strong id="streak">0</strong><span data-i18n="overview.winStreak">WIN STREAK</span></article>
         </div>
 
         <div class="two-col">
           <div class="panel match-panel">
-            <h3>MATCH HINZUFÜGEN</h3>
-            <div class="result-toggle"><button class="result win active" data-result="WIN">🏆 WIN</button><button class="result loss" data-result="LOSS">☠ LOSS</button></div>
-            <label>SR Veränderung<div class="number-step"><button id="minusSr" type="button">−</button><input id="srChange" type="number" value="25"/><button id="plusSr" type="button">+</button></div></label>
+            <h3 data-i18n="match.addTitle">MATCH HINZUFÜGEN</h3>
+            <div class="result-toggle"><button class="result win active" data-result="WIN">🏆 <span data-i18n="match.win">WIN</span></button><button class="result loss" data-result="LOSS">☠ <span data-i18n="match.loss">LOSS</span></button></div>
+            <label data-i18n="match.srChange">SR Veränderung<div class="number-step"><button id="minusSr" type="button">−</button><input id="srChange" type="number" value="25"/><button id="plusSr" type="button">+</button></div></label>
             <div class="kd-row">
-              <label>Kills<input id="kills" type="number" min="0" value="0"/></label>
-              <label>Deaths<input id="deaths" type="number" min="0" value="0"/></label>
+              <label data-i18n="match.kills">Kills<input id="kills" type="number" min="0" value="0"/></label>
+              <label data-i18n="match.deaths">Deaths<input id="deaths" type="number" min="0" value="0"/></label>
             </div>
             <div class="kd-row">
-              <label>Platzierung<input id="placement" type="number" min="1" placeholder="z. B. 4"/></label>
-              <label>Schaden<input id="damage" type="number" min="0" placeholder="z. B. 3314"/></label>
+              <label data-i18n="match.placement">Platzierung<input id="placement" type="number" min="1" placeholder="z. B. 4" data-i18n-placeholder="match.placementPh"/></label>
+              <label data-i18n="match.damage">Schaden<input id="damage" type="number" min="0" placeholder="z. B. 3314" data-i18n-placeholder="match.damagePh"/></label>
             </div>
-            <label>Punkte<input id="points" type="number" min="0" placeholder="z. B. 3750"/></label>
-            <label>Notiz (optional)<input id="note" maxlength="160" placeholder="z. B. starke Runde, schwierige Lobby ..." /></label>
-            <button id="saveMatch" class="primary">MATCH SPEICHERN</button>
+            <label data-i18n="match.points">Punkte<input id="points" type="number" min="0" placeholder="z. B. 3750" data-i18n-placeholder="match.pointsPh"/></label>
+            <label data-i18n="match.note">Notiz (optional)<input id="note" maxlength="160" placeholder="z. B. starke Runde, schwierige Lobby ..." data-i18n-placeholder="match.notePh" /></label>
+            <button id="saveMatch" class="primary" data-i18n="match.save">MATCH SPEICHERN</button>
+            <button id="cancelEdit" class="ghost hidden" style="width:100%;margin-top:8px" data-i18n="match.cancelEdit">Bearbeitung abbrechen</button>
           </div>
-          <div class="panel"><h3>SR VERLAUF</h3><canvas id="chart" width="700" height="260"></canvas></div>
+          <div class="panel"><h3 data-i18n="overview.srHistory">SR VERLAUF</h3><canvas id="chart" width="700" height="260"></canvas></div>
         </div>
       </section>
 
-      <section id="matches" class="page"><div class="panel"><h2>Matches</h2><div id="matchesList" class="match-list"></div></div></section>
-      <section id="history" class="page"><div class="panel"><h2>SR Verlauf</h2><canvas id="historyChart" width="900" height="380"></canvas><div id="historyList" class="match-list"></div></div></section>
+      <section id="matches" class="page"><div class="panel">
+        <h2 data-i18n="nav.matches">Matches</h2>
+        <div class="tabs stat-tabs" style="max-width:100%;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="stat-tab match-filter active" data-filter="all" data-i18n="matches.all">Alle</button>
+          <button class="stat-tab match-filter" data-filter="win" data-i18n="matches.wins">Siege</button>
+          <button class="stat-tab match-filter" data-filter="loss" data-i18n="matches.losses">Niederlagen</button>
+          <button id="sortToggle" class="ghost" style="margin-left:auto" data-i18n="matches.sortDesc">↓ Neueste zuerst</button>
+        </div>
+        <div id="matchesList" class="match-list"></div>
+      </div></section>
+      <section id="history" class="page"><div class="panel"><h2 data-i18n="overview.srHistory">SR Verlauf</h2><canvas id="historyChart" width="900" height="380"></canvas><div id="historyList" class="match-list"></div></div></section>
 
       <section id="stats" class="page">
+        <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:14px" data-i18n="stats.season">Season<select id="seasonFilter" style="width:100%;margin-top:6px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text)"><option value="all" data-i18n="stats.allSeasons">Alle Seasons</option></select></label>
         <div class="tabs stat-tabs">
-          <button class="stat-tab active" data-range="all">Gesamt</button>
-          <button class="stat-tab" data-range="month">Monat</button>
-          <button class="stat-tab" data-range="today">Heute</button>
+          <button class="stat-tab active" data-range="all" data-i18n="stats.total">Gesamt</button>
+          <button class="stat-tab" data-range="month" data-i18n="stats.month">Monat</button>
+          <button class="stat-tab" data-range="today" data-i18n="stats.todayTab">Heute</button>
         </div>
         <div class="metric-grid large">
-          <article><small>GESAMT MATCHES</small><strong id="totalMatches">0</strong></article>
-          <article><small>WINRATE</small><strong id="totalWinrate">0%</strong></article>
-          <article><small>SIEGE</small><strong id="totalWins">0</strong></article>
-          <article><small>NIEDERLAGEN</small><strong id="totalLosses">0</strong></article>
+          <article><small data-i18n="stats.totalMatches">GESAMT MATCHES</small><strong id="totalMatches">0</strong></article>
+          <article><small data-i18n="overview.winrate">WINRATE</small><strong id="totalWinrate">0%</strong></article>
+          <article><small data-i18n="stats.wins">SIEGE</small><strong id="totalWins">0</strong></article>
+          <article><small data-i18n="stats.losses">NIEDERLAGEN</small><strong id="totalLosses">0</strong></article>
           <article><small>K/D</small><strong id="kdRatio">0.00</strong></article>
-          <article><small>Ø SR / MATCH</small><strong id="avgSr">0</strong></article>
-          <article><small>Ø PLATZIERUNG</small><strong id="avgPlacement">–</strong></article>
-          <article><small>Ø SCHADEN</small><strong id="avgDamage">–</strong></article>
-          <article><small>Ø PUNKTE</small><strong id="avgPoints">–</strong></article>
-          <article><small>BESTE PLATZIERUNG</small><strong id="bestPlacement">–</strong></article>
+          <article><small data-i18n="stats.avgSr">Ø SR / MATCH</small><strong id="avgSr">0</strong></article>
+          <article><small data-i18n="stats.avgPlacement">Ø PLATZIERUNG</small><strong id="avgPlacement">–</strong></article>
+          <article><small data-i18n="stats.avgDamage">Ø SCHADEN</small><strong id="avgDamage">–</strong></article>
+          <article><small data-i18n="stats.avgPoints">Ø PUNKTE</small><strong id="avgPoints">–</strong></article>
+          <article><small data-i18n="stats.bestPlacement">BESTE PLATZIERUNG</small><strong id="bestPlacement">–</strong></article>
         </div>
         <div class="panel">
-          <h3>RANK VERTEILUNG</h3>
+          <h3 data-i18n="stats.rankDistribution">RANK VERTEILUNG</h3>
           <div class="donut-wrap">
             <canvas id="donutChart" width="220" height="220"></canvas>
             <div id="donutLegend" class="donut-legend"></div>
@@ -119,68 +132,105 @@
 
       <section id="goals" class="page">
         <div class="panel goal-panel">
-          <h2>Dein Ziel</h2>
-          <p class="muted">Setz dir ein Rang- und SR-Ziel und behalte deinen Fortschritt im Blick.</p>
+          <h2 data-i18n="goals.title">Dein Ziel</h2>
+          <p class="muted" data-i18n="goals.body">Setz dir ein Rang- und SR-Ziel und behalte deinen Fortschritt im Blick.</p>
           <div class="goal-progress">
             <div class="rank-emblem small">◆</div>
             <div class="goal-progress-info">
               <span id="goalCurrentSr">0 SR</span>
               <div class="progress"><div id="goalBar"></div></div>
-              <small id="goalRemaining">Noch kein Ziel gesetzt</small>
+              <small id="goalRemaining" data-i18n="overview.noGoal">Noch kein Ziel gesetzt</small>
             </div>
           </div>
-          <label>Ziel-Rang<input id="goalRankInput" placeholder="z. B. Diamond II"/></label>
-          <label>Ziel-SR<input id="goalSrInput" type="number" min="0"/></label>
-          <button id="saveGoal" class="primary">Ziel speichern</button>
+          <label data-i18n="goals.rank">Ziel-Rang<input id="goalRankInput" placeholder="z. B. Diamond II" data-i18n-placeholder="goals.rankPh"/></label>
+          <label data-i18n="goals.sr">Ziel-SR<input id="goalSrInput" type="number" min="0"/></label>
+          <p id="goalEstimate" class="muted" style="margin-top:-6px"></p>
+          <button id="saveGoal" class="primary" data-i18n="goals.save">Ziel speichern</button>
         </div>
       </section>
 
       <section id="settings" class="page">
         <div class="profile-grid">
           <div class="panel avatar-panel">
-            <h2>Profilbild &amp; Name</h2>
+            <h2 data-i18n="settings.avatarTitle">Profilbild &amp; Name</h2>
             <img id="profileAvatar" class="profile-avatar" alt="" />
-            <label>Dein Name<input id="profileName" maxlength="24"/></label>
+            <label data-i18n="settings.nameLabel">Dein Name<input id="profileName" maxlength="24"/></label>
             <input id="avatarInput" type="file" accept="image/png,image/jpeg,image/webp"/>
-            <button id="uploadAvatar" class="primary">Profilbild übernehmen</button>
-            <small>Wird direkt auf diesem Gerät gespeichert, verlässt es nie.</small>
+            <button id="uploadAvatar" class="primary" data-i18n="settings.avatarUpload">Profilbild übernehmen</button>
+            <small data-i18n="settings.avatarNote">Wird direkt auf diesem Gerät gespeichert, verlässt es nie.</small>
           </div>
           <div class="panel">
-            <h2>Ranked-Profil</h2>
-            <p class="muted">Rang und Division werden automatisch aus deiner SR berechnet (Bo7-Ranked-System).</p>
-            <label>Aktuelle SR<input id="profileSr" type="number" min="0"/></label>
-            <button id="saveProfile" class="primary">Profil speichern</button>
+            <h2 data-i18n="settings.language">Sprache</h2>
+            <p class="muted" data-i18n="settings.languageBody">Wähle die Sprache der App.</p>
+            <select id="languageSelect" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text)">
+              <option value="de">Deutsch</option>
+              <option value="en">English</option>
+            </select>
           </div>
           <div class="panel">
-            <h2>Daten sichern &amp; wiederherstellen</h2>
-            <p class="muted">Alles liegt nur in diesem Browser. Lösch niemals den Browser-Speicher, ohne vorher eine Sicherung herunterzuladen.</p>
-            <button id="exportBtn2" class="ghost">Sicherung herunterladen</button>
-            <label style="display:block;margin-top:14px;font-size:12px;color:var(--muted)">Sicherung wiederherstellen
+            <h2 data-i18n="settings.rankedTitle">Ranked-Profil</h2>
+            <p class="muted" data-i18n="settings.rankedBody">Rang und Division werden automatisch aus deiner SR berechnet (Bo7-Ranked-System).</p>
+            <label data-i18n="settings.currentSr">Aktuelle SR<input id="profileSr" type="number" min="0"/></label>
+            <button id="saveProfile" class="primary" data-i18n="settings.saveProfile">Profil speichern</button>
+          </div>
+          <div class="panel">
+            <h2 data-i18n="settings.backupTitle">Daten sichern &amp; wiederherstellen</h2>
+            <p class="muted" data-i18n="settings.backupBody">Alles liegt nur in diesem Browser. Lösch niemals den Browser-Speicher, ohne vorher eine Sicherung herunterzuladen.</p>
+            <button id="exportBtn2" class="ghost" data-i18n="settings.backupDownload">Sicherung herunterladen</button>
+            <p id="backupStatus" class="muted" style="margin-top:8px;margin-bottom:0"></p>
+            <label style="display:block;margin-top:14px;font-size:12px;color:var(--muted)" data-i18n="settings.backupRestore">Sicherung wiederherstellen
               <input id="importFile" type="file" accept="application/json" style="display:block;margin-top:6px"/>
             </label>
           </div>
           <div class="panel">
-            <h2>Zurücksetzen</h2>
-            <p class="muted">Löscht alle lokalen Daten (Profil, Matches) unwiderruflich auf diesem Gerät.</p>
-            <button id="resetBtn" class="ghost danger">Alle Daten löschen</button>
+            <h2 data-i18n="settings.seasonTitle">Season</h2>
+            <p class="muted" data-i18n="settings.seasonBody">Wenn eine neue CoD-Season deine SR zurücksetzt, starte hier eine neue Season, damit alte und neue Werte in der Statistik getrennt bleiben.</p>
+            <div id="seasonList" style="margin-bottom:12px"></div>
+            <label data-i18n="settings.seasonLabel">Name der neuen Season<input id="seasonLabel" placeholder="z. B. Season 6" data-i18n-placeholder="settings.seasonPh"/></label>
+            <button id="startSeason" class="primary" data-i18n="settings.seasonStart">Neue Season starten</button>
+          </div>
+          <div class="panel">
+            <h2 data-i18n="settings.resetTitle">Zurücksetzen</h2>
+            <p class="muted" data-i18n="settings.resetBody">Löscht alle lokalen Daten (Profil, Matches) unwiderruflich auf diesem Gerät.</p>
+            <button id="resetBtn" class="ghost danger" data-i18n="settings.resetButton">Alle Daten löschen</button>
           </div>
         </div>
       </section>
     </main>
 
     <nav class="bottom-nav">
-      <button class="bnav active" data-page="overview"><span class="bnav-ic">▣</span>Übersicht</button>
-      <button class="bnav" data-page="matches"><span class="bnav-ic">⌘</span>Matches</button>
-      <button class="bnav" data-page="history"><span class="bnav-ic">◴</span>Verlauf</button>
-      <button class="bnav" data-page="stats"><span class="bnav-ic">▥</span>Statistiken</button>
-      <button class="bnav" id="bnavMore"><span class="bnav-ic">•••</span>Mehr</button>
+      <button class="bnav active" data-page="overview"><span class="bnav-ic">▣</span><span data-i18n="nav.overview">Übersicht</span></button>
+      <button class="bnav" data-page="matches"><span class="bnav-ic">⌘</span><span data-i18n="nav.matches">Matches</span></button>
+      <button class="bnav" data-page="history"><span class="bnav-ic">◴</span><span data-i18n="nav.history">Verlauf</span></button>
+      <button class="bnav" data-page="stats"><span class="bnav-ic">▥</span><span data-i18n="nav.stats">Statistiken</span></button>
+      <button class="bnav" id="bnavMore"><span class="bnav-ic">•••</span><span data-i18n="nav.more">Mehr</span></button>
     </nav>
     <div id="moreSheet" class="more-sheet">
-      <button class="nav" data-page="goals">◎ Ziele</button>
-      <button class="nav" data-page="settings">⚙ Einstellungen</button>
+      <button class="nav" data-page="goals">◎ <span data-i18n="nav.goals">Ziele</span></button>
+      <button class="nav" data-page="settings">⚙ <span data-i18n="nav.settings">Einstellungen</span></button>
+      <button id="helpBtnMobile" class="nav">? <span data-i18n="nav.help">Hilfe</span></button>
     </div>
   </div>
 
+  <div id="helpOverlay" class="help-overlay hidden">
+    <div class="help-card">
+      <div class="help-head"><h2 data-i18n="nav.help">Hilfe</h2><button id="closeHelp" class="icon-btn">×</button></div>
+      <div class="help-body">
+        <h3 data-i18n="help.h1">WIN oder LOSS?</h3>
+        <p data-i18n="help.p1">Bezieht sich auf deine SR-Veränderung, nicht auf Platz 1. SR gestiegen (auch bei Platz 2, 5, 8...) → WIN. SR gesunken → LOSS.</p>
+        <h3 data-i18n="help.h2">Platzierung, Schaden, Punkte</h3>
+        <p data-i18n="help.p2">Alle drei sind optional. Platzierung = mit welchem Platz du rausgegangen bist (z. B. "1" für den Sieg). Kannst du auch leer lassen.</p>
+        <h3 data-i18n="help.h3">Rang &amp; Division</h3>
+        <p data-i18n="help.p3">Werden automatisch aus deiner SR berechnet – nichts manuell einstellen nötig.</p>
+        <h3 data-i18n="help.h4">Ziele</h3>
+        <p data-i18n="help.p4">Setz dir einen Wunschrang und eine Ziel-SR. Die App schätzt dir, wie viele Matches du bei deinem aktuellen Tempo noch brauchst.</p>
+        <h3 data-i18n="help.h5">Season-Marker</h3>
+        <p data-i18n="help.p5">Wenn eine neue CoD-Season deine SR zurücksetzt, starte unter Einstellungen eine "Neue Season" – so bleiben alte und neue Werte in der Statistik sauber getrennt.</p>
+        <h3 data-i18n="help.h6">Daten sichern</h3>
+        <p data-i18n="help.p6">Alles wird nur lokal auf diesem Gerät gespeichert. Lösch niemals den Browser-Speicher, ohne vorher unter Einstellungen eine Sicherung herunterzuladen.</p>
+      </div>
+    </div>
+  </div>
   <div id="toast" class="toast"></div>
   <script src="app.js"></script>
 </body>
