@@ -13,7 +13,7 @@
 <body>
   <div id="setupView" class="auth-shell">
     <div class="brand-card">
-      <div class="brand-mark">◎</div>
+      <div class="brand-mark"><img src="icons/icon-192.png" alt="" /></div>
       <div><strong>COD RANKED</strong><span>TRACKER</span></div>
     </div>
     <div class="auth-card">
@@ -28,7 +28,7 @@
 
   <div id="appView" class="app hidden">
     <aside class="sidebar">
-      <div class="logo"><div class="logo-dot">◎</div><div>COD RANKED<br><span>TRACKER</span></div></div>
+      <div class="logo"><div class="logo-dot"><img src="icons/icon-192.png" alt="" /></div><div>COD RANKED<br><span>TRACKER</span></div></div>
       <nav>
         <button class="nav active" data-page="overview"><i class="ic">▣</i> <span data-i18n="nav.overview">Übersicht</span></button>
         <button class="nav" data-page="matches"><i class="ic">⌘</i> <span data-i18n="nav.matches">Matches</span></button>
@@ -171,6 +171,11 @@
             <h2 data-i18n="settings.rankedTitle">Ranked-Profil</h2>
             <p class="muted" data-i18n="settings.rankedBody">Rang und Division werden automatisch aus deiner SR berechnet (Bo7-Ranked-System).</p>
             <label data-i18n="settings.currentSr">Aktuelle SR<input id="profileSr" type="number" min="0"/></label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);cursor:pointer">
+              <input id="top250Toggle" type="checkbox" style="width:auto"/>
+              <span data-i18n="settings.top250Toggle">Ich bin aktuell in den Top 250</span>
+            </label>
+            <label id="top250RankWrap" class="hidden" data-i18n="settings.top250Rank">Meine Platzierung (1–250)<input id="top250Rank" type="number" min="1" max="250"/></label>
             <button id="saveProfile" class="primary" data-i18n="settings.saveProfile">Profil speichern</button>
           </div>
           <div class="panel">
@@ -232,6 +237,7 @@
     </div>
   </div>
   <div id="toast" class="toast"></div>
+  <div id="chartTooltip" class="chart-tooltip hidden"></div>
   <script src="app.js"></script>
 </body>
 </html>

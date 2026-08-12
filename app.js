@@ -44,6 +44,8 @@ const I18N = {
     'settings.language': 'Sprache', 'settings.languageBody': 'Wähle die Sprache der App.',
     'settings.rankedTitle': 'Ranked-Profil', 'settings.rankedBody': 'Rang und Division werden automatisch aus deiner SR berechnet (Bo7-Ranked-System).',
     'settings.currentSr': 'Aktuelle SR', 'settings.saveProfile': 'Profil speichern',
+    'settings.top250Toggle': 'Ich bin aktuell in den Top 250',
+    'settings.top250Rank': 'Meine Platzierung (1–250)',
     'settings.backupTitle': 'Daten sichern & wiederherstellen',
     'settings.backupBody': 'Alles liegt nur in diesem Browser. Lösch niemals den Browser-Speicher, ohne vorher eine Sicherung herunterzuladen.',
     'settings.backupDownload': 'Sicherung herunterladen', 'settings.backupRestore': 'Sicherung wiederherstellen',
@@ -116,6 +118,8 @@ const I18N = {
     'settings.language': 'Language', 'settings.languageBody': 'Choose the app language.',
     'settings.rankedTitle': 'Ranked profile', 'settings.rankedBody': 'Rank and division are calculated automatically from your SR (Bo7 ranked system).',
     'settings.currentSr': 'Current SR', 'settings.saveProfile': 'Save profile',
+    'settings.top250Toggle': "I'm currently in the Top 250",
+    'settings.top250Rank': 'My placement (1–250)',
     'settings.backupTitle': 'Backup & restore',
     'settings.backupBody': 'Everything lives only in this browser. Never clear browser storage without downloading a backup first.',
     'settings.backupDownload': 'Download backup', 'settings.backupRestore': 'Restore backup',
@@ -193,7 +197,7 @@ function saveStore(store) {
 }
 function emptyStore(name) {
   return {
-    profile: { username: name, avatar: null, rank: 'UNRANKED', division: '', sr: 0, startingSr: 0, srTarget: 0, goalRank: '', lastBackupAt: null, language: currentLang },
+    profile: { username: name, avatar: null, rank: 'UNRANKED', division: '', sr: 0, startingSr: 0, srTarget: 0, goalRank: '', lastBackupAt: null, language: currentLang, top250: false, top250Rank: null },
     matches: [],
     seasons: []
   };
@@ -301,8 +305,12 @@ $$('.result').forEach(b => b.onclick = () => {
   $$('.result').forEach(x => x.classList.remove('active'));
   b.classList.add('active');
 });
-$('#minusSr').onclick = () => $('#srChange').value = Number($('#srChange').value || 0) - 1;
-$('#plusSr').onclick = () => $('#srChange').value = Number($('#srChange').value || 0) + 1;
+function updateSrChangeColor() {
+  $('#srChange').style.color = Number($('#srChange').value || 0) < 0 ? 'var(--red)' : 'var(--green)';
+}
+$('#srChange').addEventListener('input', updateSrChangeColor);
+$('#minusSr').onclick = () => { $('#srChange').value = Number($('#srChange').value || 0) - 1; updateSrChangeColor(); };
+$('#plusSr').onclick = () => { $('#srChange').value = Number($('#srChange').value || 0) + 1; updateSrChangeColor(); };
 
 function uid() {
   return (crypto.randomUUID ? crypto.randomUUID() : 'm-' + Date.now() + '-' + Math.random().toString(16).slice(2));
@@ -318,6 +326,7 @@ function resetMatchForm() {
   $('#placement').value = ''; $('#damage').value = ''; $('#points').value = ''; $('#note').value = '';
   selectedResult = 'WIN';
   $$('.result').forEach(x => x.classList.toggle('active', x.dataset.result === 'WIN'));
+  updateSrChangeColor();
 }
 
 function startEditMatch(id) {
@@ -327,6 +336,7 @@ function startEditMatch(id) {
   selectedResult = m.result;
   $$('.result').forEach(x => x.classList.toggle('active', x.dataset.result === m.result));
   $('#srChange').value = m.srChange;
+  updateSrChangeColor();
   $('#kills').value = m.kills || 0;
   $('#deaths').value = m.deaths || 0;
   $('#placement').value = Number.isFinite(m.placement) ? m.placement : '';
@@ -389,10 +399,16 @@ $('#sortToggle').onclick = () => {
 };
 
 /* ---------- Settings: profile, avatar ---------- */
+$('#top250Toggle').onchange = () => {
+  $('#top250RankWrap').classList.toggle('hidden', !$('#top250Toggle').checked);
+};
+
 $('#saveProfile').onclick = () => {
   const newSr = Math.max(0, Math.trunc(Number($('#profileSr').value) || 0));
   const matchSum = store.matches.reduce((s, m) => s + Number(m.srChange || 0), 0);
   store.profile.startingSr = Math.max(0, newSr - matchSum);
+  store.profile.top250 = $('#top250Toggle').checked;
+  store.profile.top250Rank = store.profile.top250 ? Math.min(250, Math.max(1, Math.trunc(Number($('#top250Rank').value)) || 250)) : null;
   recomputeChain();
   saveStore(store);
   toast(t('toast.profileSaved')); render();
@@ -600,10 +616,19 @@ function render() {
   $('#helloName').textContent = p.username;
   $('#profileName').value = p.username;
 
-  const rk = rankForSr(p.sr);
+  function top250Icon(rank) {
+    if (rank === 1) return 'icons/ranks/Platz_1.png';
+    if (rank <= 50) return 'icons/ranks/Top_250_50-1.png';
+    if (rank <= 150) return 'icons/ranks/Top_250_150-51.png';
+    if (rank <= 200) return 'icons/ranks/Top_250_200-151.png';
+    return 'icons/ranks/Top_250_250-201.png';
+  }
+  const rk = (p.top250 && p.top250Rank)
+    ? { name: 'Top 250', division: `#${p.top250Rank}`, color: '#f2c14e', icon: top250Icon(p.top250Rank), nextLabel: '', srToNext: null }
+    : rankForSr(p.sr);
   $('#rankName').textContent = rk.name.toUpperCase();
   $('#rankName').style.color = rk.color;
-  $('#divisionName').textContent = rk.division ? `DIVISION ${rk.division}` : '';
+  $('#divisionName').textContent = rk.division ? (p.top250 ? rk.division : `DIVISION ${rk.division}`) : '';
   $$('.rank-emblem').forEach(el => el.innerHTML = `<img src="${rk.icon}" alt="${rk.name} ${rk.division}" onerror="this.style.display='none'"/>`);
   $('#srValue').textContent = p.sr.toLocaleString(locale());
   $('#srTarget').textContent = p.srTarget ? `/ ${p.srTarget.toLocaleString(locale())}` : '';
@@ -622,6 +647,9 @@ function render() {
   $('#streak').textContent = '🔥 ' + s.streak;
 
   $('#profileSr').value = p.sr;
+  $('#top250Toggle').checked = !!p.top250;
+  $('#top250Rank').value = p.top250Rank || '';
+  $('#top250RankWrap').classList.toggle('hidden', !p.top250);
   $('#goalRankInput').value = p.goalRank || '';
   $('#goalSrInput').value = p.srTarget || '';
   $('#goalCurrentSr').textContent = p.sr.toLocaleString(locale()) + ' SR';
@@ -716,20 +744,59 @@ function draw(c, data) {
   ctx.clearRect(0, 0, w, h);
   ctx.strokeStyle = '#23262d'; ctx.lineWidth = 1;
   for (let i = 1; i < 5; i++) { const y = i * h / 5; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+  c._points = [];
   if (!data.length) return;
   const vals = data.map(x => x.srAfter), min = Math.min(...vals) - 50, max = Math.max(...vals) + 50, range = Math.max(1, max - min);
-  ctx.strokeStyle = '#ff7a1a'; ctx.lineWidth = 4; ctx.beginPath();
-  vals.forEach((v, i) => {
-    const x = (i / Math.max(1, vals.length - 1)) * (w - 30) + 15, y = h - 20 - ((v - min) / range) * (h - 40);
-    i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+  const xy = (i) => ({
+    x: (i / Math.max(1, vals.length - 1)) * (w - 30) + 15,
+    y: h - 20 - ((vals[i] - min) / range) * (h - 40)
   });
-  ctx.stroke();
-  ctx.fillStyle = '#ff7a1a';
-  vals.forEach((v, i) => {
-    const x = (i / Math.max(1, vals.length - 1)) * (w - 30) + 15, y = h - 20 - ((v - min) / range) * (h - 40);
-    ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
+  const colorFor = (m) => Number(m.srChange || 0) < 0 ? '#ff5c5c' : '#3ddc84';
+  // line segments, colored by the destination match's result
+  ctx.lineWidth = 4;
+  for (let i = 1; i < data.length; i++) {
+    const a = xy(i - 1), b = xy(i);
+    ctx.strokeStyle = colorFor(data[i]);
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+  }
+  // points
+  data.forEach((m, i) => {
+    const p = xy(i);
+    ctx.fillStyle = colorFor(m);
+    ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
+    c._points.push({ x: p.x, y: p.y, match: m });
   });
 }
+
+/* ---------- Chart hover tooltip ---------- */
+function attachChartTooltip(canvas) {
+  const tip = $('#chartTooltip');
+  const show = (clientX, clientY, match) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = rect.width / canvas.width, scaleY = rect.height / canvas.height;
+    let nearest = null, nearestDist = Infinity;
+    const cx = (clientX - rect.left) / scaleX, cy = (clientY - rect.top) / scaleY;
+    (canvas._points || []).forEach(p => {
+      const d = Math.hypot(p.x - cx, p.y - cy);
+      if (d < nearestDist) { nearestDist = d; nearest = p; }
+    });
+    if (!nearest || nearestDist > 28) { tip.classList.add('hidden'); return; }
+    const m = nearest.match;
+    const date = new Date(m.createdAt).toLocaleDateString(locale());
+    const noteHtml = m.note ? `<br>${escapeHtml(m.note)}` : '';
+    tip.innerHTML = `<strong class="${m.srChange >= 0 ? 'win-t' : 'loss-t'}">${date} · ${m.result} · ${m.srChange >= 0 ? '+' : ''}${m.srChange} SR</strong>${noteHtml}`;
+    tip.classList.remove('hidden');
+    tip.style.left = (rect.left + nearest.x * scaleX) + 'px';
+    tip.style.top = (rect.top + nearest.y * scaleY - 10) + 'px';
+  };
+  canvas.addEventListener('mousemove', e => show(e.clientX, e.clientY));
+  canvas.addEventListener('mouseleave', () => tip.classList.add('hidden'));
+  canvas.addEventListener('touchstart', e => { const t = e.touches[0]; if (t) show(t.clientX, t.clientY); }, { passive: true });
+  canvas.addEventListener('touchmove', e => { const t = e.touches[0]; if (t) show(t.clientX, t.clientY); }, { passive: true });
+  canvas.addEventListener('touchend', () => tip.classList.add('hidden'));
+}
+attachChartTooltip($('#chart'));
+attachChartTooltip($('#historyChart'));
 
 function drawDonut(dist) {
   const c = $('#donutChart'); if (!c) return;
