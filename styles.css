@@ -21,6 +21,7 @@ body{
   color:var(--text);
   font-family:"Segoe UI",Inter,Roboto,system-ui,-apple-system,sans-serif;
   min-height:100vh;
+  overflow-x:hidden;
 }
 .hidden{display:none !important}
 small{color:var(--muted)}
@@ -148,6 +149,7 @@ canvas{width:100%;height:auto;display:block}
 .stat-tab{flex:1;padding:9px;border:none;background:transparent;color:var(--muted);border-radius:999px;font-weight:600;font-size:12px}
 .stat-tab.active{background:var(--orange);color:#1a0e04}
 .donut-wrap{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+#donutChart{max-width:220px}
 .donut-legend{display:flex;flex-direction:column;gap:10px;flex:1;min-width:160px}
 .legend-row{display:flex;align-items:center;gap:8px;font-size:13px}
 .legend-dot{width:10px;height:10px;border-radius:50%;flex:none}
@@ -211,6 +213,13 @@ canvas{width:100%;height:auto;display:block}
     background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
     padding:10px;flex-direction:column;gap:4px;box-shadow:0 10px 40px rgba(0,0,0,.5)
   }
+
+  .match-row{
+    display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;
+  }
+  .match-row > span{flex:1 1 100%;order:3;min-width:0;overflow-wrap:break-word}
+  .match-row .date{order:4;flex:1 1 100%;font-size:11px}
+  .match-row .edit,.match-row .delete{order:5;flex:none}
 }
 
 /* ---------- Help overlay ---------- */
