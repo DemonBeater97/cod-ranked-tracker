@@ -85,7 +85,7 @@ header small{font-size:12px}
 
 /* ---------- Cards ---------- */
 .panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
-.panel h2,.panel h3{margin:0 0 16px;font-size:14px;letter-spacing:.4px;color:var(--muted);text-transform:uppercase}
+.panel h2,.panel h3{margin:0 0 16px;font-size:14px;letter-spacing:.4px;color:#aeb4c0;text-transform:uppercase}
 .muted{color:#9199a6;font-size:13px}
 
 .rank-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:22px;display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;align-items:center;gap:6px 20px;margin-bottom:22px}
