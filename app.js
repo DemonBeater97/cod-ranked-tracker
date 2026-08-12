@@ -629,6 +629,7 @@ function render() {
   $('#rankName').textContent = rk.name.toUpperCase();
   $('#rankName').style.color = rk.color;
   $('#divisionName').textContent = rk.division ? (p.top250 ? rk.division : `DIVISION ${rk.division}`) : '';
+  $('#divisionName').style.color = p.top250 ? rk.color : '';
   $$('.rank-emblem').forEach(el => el.innerHTML = `<img src="${rk.icon}" alt="${rk.name} ${rk.division}" onerror="this.style.display='none'"/>`);
   $('#srValue').textContent = p.sr.toLocaleString(locale());
   $('#srTarget').textContent = p.srTarget ? `/ ${p.srTarget.toLocaleString(locale())}` : '';

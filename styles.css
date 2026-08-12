@@ -229,3 +229,8 @@ canvas{width:100%;height:auto;display:block}
 /* ---------- Chart tooltip ---------- */
 .chart-tooltip{position:fixed;transform:translate(-50%,-100%);background:#1e2028;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;line-height:1.4;z-index:95;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.4);max-width:220px}
 canvas{cursor:crosshair}
+
+/* ---------- Larger rank emblem on desktop ---------- */
+@media (min-width: 761px){
+  .rank-emblem{width:130px;height:130px;border-radius:22px}
+}
