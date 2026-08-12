@@ -618,6 +618,13 @@ function enterApp() {
   render();
 }
 
+function lightenHex(hex, amount) {
+  const n = hex.replace('#', '');
+  const r = parseInt(n.substring(0, 2), 16), g = parseInt(n.substring(2, 4), 16), b = parseInt(n.substring(4, 6), 16);
+  const mix = c => Math.round(c + (255 - c) * amount);
+  return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+}
+
 function render() {
   const p = store.profile;
   const av = p.avatar || avatarFallback;
@@ -640,6 +647,7 @@ function render() {
   $('#rankName').style.color = rk.color;
   $('#divisionName').textContent = rk.division ? (p.top250 ? rk.division : `DIVISION ${rk.division}`) : '';
   $('#divisionName').style.color = p.top250 ? rk.color : '';
+  $('#srBar').style.background = `linear-gradient(90deg, ${rk.color}, ${lightenHex(rk.color, 0.35)})`;
   $$('.rank-emblem').forEach(el => el.innerHTML = `<img src="${rk.icon}" alt="${rk.name} ${rk.division}" onerror="this.style.display='none'"/>`);
   $('#srValue').textContent = p.sr.toLocaleString(locale());
   $('#srTarget').textContent = p.srTarget ? `/ ${p.srTarget.toLocaleString(locale())}` : '';
@@ -663,7 +671,7 @@ function render() {
   $('#top250RankWrap').classList.toggle('hidden', !p.top250);
   $('#goalRankInput').value = p.goalRank || '';
   $('#goalSrInput').value = p.srTarget || '';
-  $('#goalCurrentSr').textContent = p.sr.toLocaleString(locale()) + ' SR';
+  $('#goalCurrentSr').textContent = p.sr.toLocaleString(locale()) + ' SR' + (p.srTarget ? ` / ${p.srTarget.toLocaleString(locale())}` : '');
   $('#goalBar').style.width = pct + '%';
   $('#goalRemaining').textContent = p.srTarget
     ? t('goals.remaining', { n: Math.max(0, p.srTarget - p.sr), rank: p.goalRank || t('goals.genericGoal') })
