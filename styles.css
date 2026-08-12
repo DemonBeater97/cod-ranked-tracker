@@ -156,7 +156,7 @@ canvas{width:100%;height:auto;display:block}
 .legend-row span:last-child{margin-left:auto;color:var(--muted)}
 
 /* ---------- Goals ---------- */
-.goal-panel{max-width:520px}
+.goal-panel{max-width:720px}
 .goal-progress{display:flex;align-items:center;gap:16px;margin:18px 0 22px}
 .goal-progress-info{flex:1}
 .goal-progress-info span{display:block;font-size:20px;font-weight:700;margin-bottom:8px}
@@ -190,6 +190,7 @@ canvas{width:100%;height:auto;display:block}
 }
 
 @media (max-width: 760px){
+  .goal-panel label{display:block !important;width:100% !important;margin-right:0 !important}
   .sidebar{position:fixed;left:0;top:0;bottom:0;z-index:60;transform:translateX(-100%);transition:transform .25s ease;box-shadow:20px 0 40px rgba(0,0,0,.5)}
   .sidebar.open{transform:translateX(0)}
   .mobile-menu{display:flex;align-items:center;justify-content:center}
