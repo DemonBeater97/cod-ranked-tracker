@@ -70,7 +70,7 @@ button.primary:hover{filter:brightness(1.07)}
 .ghost.danger{color:var(--red);width:100%;justify-content:center;margin-top:8px}
 #logoutBtn{width:100%;justify-content:center;margin-top:10px}
 
-main{flex:1;padding:24px 28px 90px;max-width:1200px;margin:0 auto}
+main{flex:1;padding:24px 32px 90px;max-width:1440px;margin:0 auto;width:100%}
 header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:12px}
 header h1{margin:2px 0 0;font-size:22px}
 header small{font-size:12px}
@@ -91,7 +91,7 @@ header small{font-size:12px}
 .rank-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:22px;display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;align-items:center;gap:6px 20px;margin-bottom:22px}
 .rank-emblem{grid-row:1/3;width:96px;height:96px;border-radius:18px;background:linear-gradient(160deg,#1c2230,#0d1017);border:1px solid rgba(79,168,255,.35);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .rank-emblem img{width:100%;height:100%;object-fit:contain;padding:4px}
-.rank-emblem.small{width:44px;height:44px;border-radius:12px}
+.rank-emblem.small{width:72px;height:72px;border-radius:14px}
 .rank-main small{font-size:11px;letter-spacing:.6px;color:var(--muted)}
 .rank-main h2{margin:2px 0 0;font-size:26px;color:var(--blue);letter-spacing:.3px}
 .rank-main span{color:var(--muted);font-size:12px;font-weight:600}
@@ -156,10 +156,10 @@ canvas{width:100%;height:auto;display:block}
 .legend-row span:last-child{margin-left:auto;color:var(--muted)}
 
 /* ---------- Goals ---------- */
-.goal-panel{max-width:720px}
-.goal-progress{display:flex;align-items:center;gap:16px;margin:18px 0 22px}
+.goal-panel{max-width:900px;padding:28px}
+.goal-progress{display:flex;align-items:center;gap:24px;margin:22px 0 28px}
 .goal-progress-info{flex:1}
-.goal-progress-info span{display:block;font-size:20px;font-weight:700;margin-bottom:8px}
+.goal-progress-info span{display:block;font-size:24px;font-weight:700;margin-bottom:10px}
 .goal-panel label{display:block;font-size:12px;color:var(--muted);margin-bottom:14px}
 .goal-panel input{width:100%;margin-top:6px;padding:11px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-alt);color:var(--text)}
 
@@ -242,5 +242,17 @@ canvas{cursor:crosshair}
 
 /* ---------- Larger rank emblem on desktop ---------- */
 @media (min-width: 761px){
-  .rank-emblem{width:130px;height:130px;border-radius:22px}
+  .rank-emblem{width:150px;height:150px;border-radius:22px}
+  .rank-emblem.small{width:96px;height:96px;border-radius:18px}
+}
+
+/* ---------- Extra scale-up for wide monitors ---------- */
+@media (min-width: 1600px){
+  main{max-width:1680px;padding:32px 40px 90px}
+  .rank-emblem{width:180px;height:180px;border-radius:26px}
+  .rank-emblem.small{width:120px;height:120px;border-radius:22px}
+  .rank-main h2{font-size:32px}
+  .sr-box strong{font-size:30px}
+  .metric-grid strong{font-size:26px}
+  .goal-progress-info span{font-size:28px}
 }
