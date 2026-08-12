@@ -1,4 +1,4 @@
-const CACHE = 'cod-ranked-tracker-local-v4';
+const CACHE = 'cod-ranked-tracker-local-v5';
 const SHELL = ['./', './index.html', './styles.css', './app.js', './manifest.webmanifest'];
 self.addEventListener('install', event => {
   self.skipWaiting();
