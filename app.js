@@ -646,7 +646,7 @@ function render() {
   $('#rankName').textContent = rk.name.toUpperCase();
   $('#rankName').style.color = rk.color;
   $('#divisionName').textContent = rk.division ? (p.top250 ? rk.division : `DIVISION ${rk.division}`) : '';
-  $('#divisionName').style.color = p.top250 ? rk.color : '';
+  $('#divisionName').style.color = rk.color;
   $('#srBar').style.background = `linear-gradient(90deg, ${rk.color}, ${lightenHex(rk.color, 0.35)})`;
   $$('.rank-emblem').forEach(el => el.innerHTML = `<img src="${rk.icon}" alt="${rk.name} ${rk.division}" onerror="this.style.display='none'"/>`);
   $('#srValue').textContent = p.sr.toLocaleString(locale());
@@ -714,7 +714,11 @@ function renderStats() {
   const s = getStats(statRange);
   $('#totalMatches').textContent = s.total;
   $('#totalWins').textContent = s.wins;
+  $('#totalWins').style.color = 'var(--green)';
+  $('#winsLabel').style.color = 'var(--green)';
   $('#totalLosses').textContent = s.losses;
+  $('#totalLosses').style.color = 'var(--red)';
+  $('#lossesLabel').style.color = 'var(--red)';
   $('#totalWinrate').textContent = s.winrate.toFixed(1) + '%';
   $('#avgSr').textContent = (s.avgSr >= 0 ? '+' : '') + s.avgSr.toFixed(1);
   $('#kdRatio').textContent = s.kd.toFixed(2);
@@ -838,7 +842,7 @@ function drawDonut(dist) {
     start += angle;
   });
   $('#donutLegend').innerHTML = dist.map(d => `
-    <div class="legend-row"><span class="legend-dot" style="background:${rankColor(d.rank)}"></span>${escapeHtml(d.rank)}<span>${d.pct.toFixed(0)}%</span></div>
+    <div class="legend-row"><span class="legend-dot" style="background:${rankColor(d.rank)}"></span><span style="color:${rankColor(d.rank)}">${escapeHtml(d.rank)}</span><span>${d.pct.toFixed(0)}%</span></div>
   `).join('');
 }
 

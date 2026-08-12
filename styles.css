@@ -96,26 +96,27 @@ header small{font-size:12px}
 .rank-main h2{margin:2px 0 0;font-size:26px;color:var(--blue);letter-spacing:.3px}
 .rank-main span{color:#aeb4c0;font-size:15px;font-weight:700}
 .sr-box{text-align:right;grid-column:3;grid-row:1}
-.sr-box small{font-size:11px}
+.sr-box small{font-size:14px;font-weight:700;color:#c3c8d4}
 .sr-box strong{font-size:24px;margin:0 4px}
 .sr-box span{color:var(--muted);font-size:13px}
 .progress-wrap{grid-column:1/4;margin-top:8px}
 .progress{height:8px;border-radius:999px;background:var(--panel-2);overflow:hidden;margin-bottom:6px}
 .progress > div{height:100%;background:linear-gradient(90deg,var(--blue),#7ecbff);border-radius:999px;width:0%;transition:width .4s ease}
 #goalBar{background:linear-gradient(90deg,var(--orange),var(--orange-2))}
-.progress-wrap small{font-size:13px;font-weight:600;color:#aeb4c0}
+.progress-wrap small{font-size:14px;font-weight:600;color:#c7ccd6}
 
-.section-title{font-size:12px;letter-spacing:.6px;color:var(--muted);margin:4px 0 10px}
+.section-title{font-size:13px;font-weight:700;letter-spacing:.6px;color:#aeb4c0;margin:4px 0 10px}
 .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
 .metric-grid.large{grid-template-columns:repeat(3,1fr)}
 .metric-grid article{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px}
-.metric-grid small{display:block;font-size:10px;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
-.metric-grid strong{font-size:22px;display:block;color:var(--green)}
-.metric-grid article:nth-child(2) strong,.metric-grid article:nth-child(1):not(:first-of-type) strong{color:var(--text)}
+.metric-grid small{display:block;font-size:12px;font-weight:700;letter-spacing:.5px;color:#aeb4c0;margin-bottom:6px}
+.metric-grid strong{font-size:22px;display:block;color:var(--text)}
+#totalWins{color:var(--green)}
+#totalLosses{color:var(--red)}
 .metric-grid article span{font-size:11px;color:var(--muted)}
 #todaySr{color:var(--green)}
 #streak{color:var(--orange)}
-#winrate,#totalWinrate,#totalMatches,#totalWins,#totalLosses,#kdRatio,#avgSr{color:var(--text)}
+#winrate,#totalWinrate,#totalMatches,#kdRatio,#avgSr{color:var(--text)}
 #todayMatches{color:var(--text)}
 
 .two-col{display:grid;grid-template-columns:1fr 1.3fr;gap:20px}
@@ -151,12 +152,12 @@ canvas{width:100%;height:auto;display:block}
 .donut-wrap{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
 #donutChart{max-width:220px}
 .donut-legend{display:flex;flex-direction:column;gap:10px;flex:1;min-width:160px}
-.legend-row{display:flex;align-items:center;gap:8px;font-size:13px}
-.legend-dot{width:10px;height:10px;border-radius:50%;flex:none}
-.legend-row span:last-child{margin-left:auto;color:var(--muted)}
+.legend-row{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700}
+.legend-dot{width:12px;height:12px;border-radius:50%;flex:none}
+.legend-row span:last-child{margin-left:auto;color:#c7ccd6;font-weight:700;font-size:16px}
 
 /* ---------- Goals ---------- */
-.goal-panel{max-width:900px;padding:28px;margin-left:auto;margin-right:auto}
+.goal-panel{max-width:900px;padding:28px}
 .goal-progress{display:flex;align-items:center;gap:24px;margin:22px 0 28px}
 .goal-progress-info{flex:1}
 .goal-progress-info span{display:block;font-size:24px;font-weight:700;margin-bottom:10px}
