@@ -156,7 +156,7 @@ canvas{width:100%;height:auto;display:block}
 .legend-row span:last-child{margin-left:auto;color:var(--muted)}
 
 /* ---------- Goals ---------- */
-.goal-panel{max-width:900px;padding:28px}
+.goal-panel{max-width:900px;padding:28px;margin-left:auto;margin-right:auto}
 .goal-progress{display:flex;align-items:center;gap:24px;margin:22px 0 28px}
 .goal-progress-info{flex:1}
 .goal-progress-info span{display:block;font-size:24px;font-weight:700;margin-bottom:10px}
@@ -244,6 +244,7 @@ canvas{cursor:crosshair}
 @media (min-width: 761px){
   .rank-emblem{width:150px;height:150px;border-radius:22px}
   .rank-emblem.small{width:96px;height:96px;border-radius:18px}
+  .goal-panel{max-width:960px}
 }
 
 /* ---------- Extra scale-up for wide monitors ---------- */
@@ -255,4 +256,7 @@ canvas{cursor:crosshair}
   .sr-box strong{font-size:30px}
   .metric-grid strong{font-size:26px}
   .goal-progress-info span{font-size:28px}
+  .goal-panel{max-width:1100px;padding:36px}
+  .goal-panel label{font-size:13px}
+  .goal-panel input{padding:13px 14px;font-size:15px}
 }
