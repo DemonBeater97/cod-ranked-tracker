@@ -161,17 +161,17 @@ canvas{width:100%;height:auto;display:block}
 .goal-progress{display:flex;align-items:center;gap:24px;margin:22px 0 28px}
 .goal-progress-info{flex:1}
 .goal-progress-info span{display:block;font-size:24px;font-weight:700;margin-bottom:10px}
-.goal-panel label{display:block;font-size:12px;color:var(--muted);margin-bottom:14px}
+.goal-panel label{display:block;font-size:12px;color:#a7acb8;margin-bottom:14px}
 .goal-panel input{width:100%;margin-top:6px;padding:11px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-alt);color:var(--text)}
 
 /* ---------- Settings / Profile ---------- */
 .profile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
 .avatar-panel{text-align:center}
 .profile-avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;border:3px solid var(--orange);margin-bottom:12px}
-.settings-username{font-size:13px;color:var(--muted);margin-bottom:14px}
-.avatar-panel input[type=file]{display:block;margin:0 auto 12px;font-size:12px;color:var(--muted)}
+.settings-username{font-size:13px;color:#a7acb8;margin-bottom:14px}
+.avatar-panel input[type=file]{display:block;margin:0 auto 12px;font-size:12px;color:#a7acb8}
 .avatar-panel button{margin-bottom:8px}
-.profile-grid label{display:block;font-size:12px;color:var(--muted);margin-bottom:14px}
+.profile-grid label{display:block;font-size:12px;color:#a7acb8;margin-bottom:14px}
 .profile-grid input{width:100%;margin-top:6px;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-alt);color:var(--text)}
 
 /* ---------- Toast ---------- */
