@@ -142,8 +142,10 @@
               <small id="goalRemaining" data-i18n="overview.noGoal">Noch kein Ziel gesetzt</small>
             </div>
           </div>
-          <label data-i18n="goals.rank" style="display:inline-block;width:calc(50% - 8px);margin-right:16px;vertical-align:top">Ziel-Rang<input id="goalRankInput" placeholder="z. B. Diamond II" data-i18n-placeholder="goals.rankPh"/></label>
-          <label data-i18n="goals.sr" style="display:inline-block;width:calc(50% - 8px);vertical-align:top">Ziel-SR<input id="goalSrInput" type="number" min="0"/></label>
+          <div style="display:flex;gap:16px;flex-wrap:wrap">
+            <label data-i18n="goals.rank" style="flex:1;min-width:200px">Ziel-Rang<input id="goalRankInput" placeholder="z. B. Diamond II" data-i18n-placeholder="goals.rankPh"/></label>
+            <label data-i18n="goals.sr" style="flex:1;min-width:200px">Ziel-SR<input id="goalSrInput" type="number" min="0"/></label>
+          </div>
           <p id="goalEstimate" class="muted" style="margin-top:-6px"></p>
           <button id="saveGoal" class="primary" data-i18n="goals.save">Ziel speichern</button>
         </div>
