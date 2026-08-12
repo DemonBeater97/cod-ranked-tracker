@@ -104,6 +104,7 @@ header small{font-size:12px}
 .progress > div{height:100%;background:linear-gradient(90deg,var(--blue),#7ecbff);border-radius:999px;width:0%;transition:width .4s ease}
 #goalBar{background:linear-gradient(90deg,var(--orange),var(--orange-2))}
 .progress-wrap small{font-size:14px;font-weight:600;color:#c7ccd6}
+.goal-progress-info small{font-size:14px;font-weight:600;color:#c7ccd6}
 
 .section-title{font-size:13px;font-weight:700;letter-spacing:.6px;color:#aeb4c0;margin:4px 0 10px}
 .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
@@ -161,7 +162,8 @@ canvas{width:100%;height:auto;display:block}
 .goal-progress{display:flex;align-items:center;gap:24px;margin:22px 0 28px}
 .goal-progress-info{flex:1}
 .goal-progress-info span{display:block;font-size:24px;font-weight:700;margin-bottom:10px}
-.goal-panel label{display:block;font-size:12px;color:#a7acb8;margin-bottom:14px}
+.goal-panel label{display:block;font-size:12px;font-weight:700;color:#a7acb8;margin-bottom:14px}
+.goal-note{font-weight:600;color:#a7acb8;font-size:13px}
 .goal-panel input{width:100%;margin-top:6px;padding:11px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-alt);color:var(--text)}
 
 /* ---------- Settings / Profile ---------- */
