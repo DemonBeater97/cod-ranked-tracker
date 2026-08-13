@@ -721,7 +721,7 @@ function render() {
   const pct = p.srTarget ? Math.min(100, (p.sr / p.srTarget) * 100) : 0;
   $('#srBar').style.width = pct + '%';
   $('#srRemaining').textContent = p.srTarget
-    ? t('goals.toGoal', { n: Math.max(0, p.srTarget - p.sr) })
+    ? t('goals.remaining', { n: Math.max(0, p.srTarget - p.sr), rank: p.goalRank || t('goals.genericGoal') })
     : (rk.srToNext !== null ? t('goals.remaining', { n: rk.srToNext, rank: rk.nextLabel }) : rk.nextLabel);
 
   const s = getStats(statRange);
