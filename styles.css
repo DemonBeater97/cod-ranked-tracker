@@ -150,6 +150,8 @@ canvas{width:100%;height:auto;display:block}
 .stat-tabs{max-width:280px;margin-bottom:18px}
 .stat-tab{flex:1;padding:9px;border:none;background:transparent;color:var(--muted);border-radius:999px;font-weight:600;font-size:12px}
 .stat-tab.active{background:var(--orange);color:#1a0e04}
+.mode-tab{flex:1;padding:9px;border:none;background:transparent;color:var(--muted);border-radius:999px;font-weight:600;font-size:12px}
+.mode-tab.active{background:var(--orange);color:#1a0e04}
 .donut-wrap{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
 #donutChart{max-width:220px}
 .donut-legend{display:flex;flex-direction:column;gap:10px;flex:1;min-width:160px}
