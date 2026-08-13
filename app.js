@@ -293,7 +293,7 @@ const avatarFallback = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="100%" height="100%" fill="#20232a"/><circle cx="100" cy="78" r="38" fill="#f28c00"/><path d="M35 185c5-43 30-64 65-64s60 21 65 64" fill="#f28c00"/></svg>`
 );
 
-const RANK_TIERS = [
+const RANK_TIERS_MP = [
   { key: 'Bronze',     nameDe: 'Bronze',     nameEn: 'Bronze',     min: 0,     color: '#cd7f32' },
   { key: 'Silver',     nameDe: 'Silber',     nameEn: 'Silver',     min: 900,   color: '#c3c9d1' },
   { key: 'Gold',       nameDe: 'Gold',       nameEn: 'Gold',       min: 2100,  color: '#e8c34a' },
@@ -302,9 +302,22 @@ const RANK_TIERS = [
   { key: 'Crimson',    nameDe: 'Crimson',    nameEn: 'Crimson',    min: 7500,  color: '#e6483f' },
   { key: 'Iridescent', nameDe: 'Iridescent', nameEn: 'Iridescent', min: 10000, color: '#c14fe6' }
 ];
+/* Currently identical to MP - kept as its own table so Warzone's thresholds can be
+   changed independently here, without touching Multiplayer or any other code. */
+const RANK_TIERS_WZ = [
+  { key: 'Bronze',     nameDe: 'Bronze',     nameEn: 'Bronze',     min: 0,     color: '#cd7f32' },
+  { key: 'Silver',     nameDe: 'Silber',     nameEn: 'Silver',     min: 900,   color: '#c3c9d1' },
+  { key: 'Gold',       nameDe: 'Gold',       nameEn: 'Gold',       min: 2100,  color: '#e8c34a' },
+  { key: 'Platinum',   nameDe: 'Platin',     nameEn: 'Platinum',   min: 3600,  color: '#3fd6c9' },
+  { key: 'Diamond',    nameDe: 'Diamant',    nameEn: 'Diamond',    min: 5400,  color: '#4fa8ff' },
+  { key: 'Crimson',    nameDe: 'Crimson',    nameEn: 'Crimson',    min: 7500,  color: '#e6483f' },
+  { key: 'Iridescent', nameDe: 'Iridescent', nameEn: 'Iridescent', min: 10000, color: '#c14fe6' }
+];
+const currentRankTiers = () => (store && store.mode === 'wz') ? RANK_TIERS_WZ : RANK_TIERS_MP;
 const tierName = (tier) => currentLang === 'en' ? tier.nameEn : tier.nameDe;
 
 function rankForSr(sr) {
+  const RANK_TIERS = currentRankTiers();
   sr = Math.max(0, Number(sr) || 0);
   let idx = 0;
   for (let i = 0; i < RANK_TIERS.length; i++) { if (sr >= RANK_TIERS[i].min) idx = i; }
