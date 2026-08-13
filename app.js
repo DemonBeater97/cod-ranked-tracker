@@ -42,7 +42,9 @@ const I18N = {
     'settings.avatarTitle': 'Profilbild & Name', 'settings.nameLabel': 'Dein Name',
     'settings.avatarUpload': 'Profilbild übernehmen', 'settings.avatarNote': 'Wird direkt auf diesem Gerät gespeichert, verlässt es nie.',
     'settings.language': 'Sprache', 'settings.languageBody': 'Wähle die Sprache der App.',
-    'settings.rankedTitle': 'Ranked-Profil', 'settings.rankedBody': 'Rang und Division werden automatisch aus deiner SR berechnet (Bo7-Ranked-System).',
+    'settings.rankedTitle': 'Ranked-Profil', 'settings.rankedBody': 'Rang und Division werden automatisch aus deiner SR berechnet.',
+    'settings.modeTitle': 'Modus', 'settings.modeBody': 'Multiplayer Ranked und Warzone Ranked haben getrennte SR, Ränge, Ziele, Matches und Statistiken. Wähle, welchen Modus du gerade trackst.',
+    'settings.modeMp': 'Multiplayer Ranked', 'settings.modeWz': 'Warzone Ranked',
     'settings.currentSr': 'Aktuelle SR', 'settings.saveProfile': 'Profil speichern',
     'settings.top250Toggle': 'Ich bin aktuell in den Top 250',
     'settings.top250Rank': 'Meine Platzierung (1–250)',
@@ -65,6 +67,7 @@ const I18N = {
     'help.h5': 'Season-Marker', 'help.p5': 'Wenn eine neue CoD-Season deine SR zurücksetzt, starte unter Einstellungen eine "Neue Season" – so bleiben alte und neue Werte in der Statistik sauber getrennt.',
     'help.h6': 'Daten sichern', 'help.p6': 'Alles wird nur lokal auf diesem Gerät gespeichert. Lösch niemals den Browser-Speicher, ohne vorher unter Einstellungen eine Sicherung herunterzuladen.',
     'help.h7': 'Top 250', 'help.p7': 'Bist du gerade in den Top 250? Geh zu Einstellungen → Ranked-Profil, aktiviere "Ich bin aktuell in den Top 250", trag deine Platzierung ein und speichere. Dann zeigt die App automatisch das passende goldene Top-250-Icon statt des normalen Rangs.',
+    'help.h12': 'Multiplayer / Warzone Modus', 'help.p12': 'Unter Einstellungen → Modus schaltest du zwischen Multiplayer Ranked und Warzone Ranked um. Das sind zwei komplett getrennte Profile: jeweils eigene SR, Rang, Ziel, Match-Verlauf und Statistik. Alle Seiten zeigen automatisch die Daten des gerade gewählten Modus.',
     'help.h8': 'Sprache', 'help.p8': 'Unter Einstellungen kannst du zwischen Deutsch und Englisch wechseln. Deine Wahl wird gespeichert.',
     'help.h9': 'Match bearbeiten', 'help.p9': 'Tipp in der Matches-Liste auf das Stift-Symbol (✎), um ein Match nachträglich zu ändern. Alle Werte danach werden automatisch neu berechnet.',
     'help.h10': 'Matches filtern & sortieren', 'help.p10': 'Auf der Matches-Seite kannst du nach Siege/Niederlagen filtern und nach Datum sortieren (neueste oder älteste zuerst).',
@@ -121,7 +124,9 @@ const I18N = {
     'settings.avatarTitle': 'Avatar & name', 'settings.nameLabel': 'Your name',
     'settings.avatarUpload': 'Apply avatar', 'settings.avatarNote': "Stored directly on this device, never leaves it.",
     'settings.language': 'Language', 'settings.languageBody': 'Choose the app language.',
-    'settings.rankedTitle': 'Ranked profile', 'settings.rankedBody': 'Rank and division are calculated automatically from your SR (Bo7 ranked system).',
+    'settings.rankedTitle': 'Ranked profile', 'settings.rankedBody': 'Rank and division are calculated automatically from your SR.',
+    'settings.modeTitle': 'Mode', 'settings.modeBody': 'Multiplayer Ranked and Warzone Ranked each have their own SR, rank, goal, matches, and stats. Choose which one you\'re currently tracking.',
+    'settings.modeMp': 'Multiplayer Ranked', 'settings.modeWz': 'Warzone Ranked',
     'settings.currentSr': 'Current SR', 'settings.saveProfile': 'Save profile',
     'settings.top250Toggle': "I'm currently in the Top 250",
     'settings.top250Rank': 'My placement (1–250)',
@@ -144,6 +149,7 @@ const I18N = {
     'help.h5': 'Season markers', 'help.p5': 'When a new CoD season resets your SR, start a "New season" under settings – this keeps old and new values cleanly separated in your stats.',
     'help.h6': 'Backing up data', 'help.p6': 'Everything is stored locally on this device only. Never clear browser storage without downloading a backup under settings first.',
     'help.h7': 'Top 250', 'help.p7': 'Currently in the Top 250? Go to Settings → Ranked profile, enable "I\'m currently in the Top 250", enter your placement and save. The app will then show the matching gold Top 250 icon instead of your normal rank.',
+    'help.h12': 'Multiplayer / Warzone mode', 'help.p12': 'Under Settings → Mode you can switch between Multiplayer Ranked and Warzone Ranked. These are two completely separate profiles: each with its own SR, rank, goal, match history, and stats. Every page automatically shows the data for whichever mode is currently selected.',
     'help.h8': 'Language', 'help.p8': 'Under Settings you can switch between German and English. Your choice is saved.',
     'help.h9': 'Editing a match', 'help.p9': 'Tap the pencil icon (✎) in the matches list to change a match afterwards. Everything after it is recalculated automatically.',
     'help.h10': 'Filtering & sorting matches', 'help.p10': 'On the Matches page you can filter by wins/losses and sort by date (newest or oldest first).',
@@ -188,7 +194,7 @@ function setLanguage(lang) {
   currentLang = (lang === 'en') ? 'en' : 'de';
   if ($('#languageSelect')) $('#languageSelect').value = currentLang;
   translateStatic();
-  if (store && store.profile) render();
+  if (store && store.modes) render();
 }
 const locale = () => currentLang === 'en' ? 'en-US' : 'de-DE';
 
@@ -205,26 +211,71 @@ function loadStore() {
 function saveStore(store) {
   localStorage.setItem(STORE_KEY, JSON.stringify(store));
 }
-function emptyStore(name) {
+function emptyModeData() {
   return {
-    profile: { username: name, avatar: null, rank: 'UNRANKED', division: '', sr: 0, startingSr: 0, srTarget: 0, goalRank: '', lastBackupAt: null, language: currentLang, top250: false, top250Rank: null },
+    profile: { sr: 0, startingSr: 0, srTarget: 0, goalRank: '', top250: false, top250Rank: null },
     matches: [],
     seasons: []
   };
 }
+function emptyStore(name) {
+  return {
+    username: name, avatar: null, language: currentLang, lastBackupAt: null,
+    mode: 'mp',
+    modes: { mp: emptyModeData(), wz: emptyModeData() }
+  };
+}
+/* Accepts either the new { username, modes: {mp,wz}, ... } shape, or an old
+   flat single-profile save/backup ({ profile, matches, seasons }), and always
+   returns a valid new-shape store. Old saves become the "mp" mode; "wz" starts empty. */
+function migrateStore(s) {
+  if (!s) return s;
+  if (s.modes) {
+    s.modes.mp = s.modes.mp || emptyModeData();
+    s.modes.wz = s.modes.wz || emptyModeData();
+    if (s.mode !== 'mp' && s.mode !== 'wz') s.mode = 'mp';
+    return s;
+  }
+  if (!s.profile) return null;
+  const op = s.profile;
+  const oldMatches = Array.isArray(s.matches) ? s.matches : [];
+  let startingSr = op.startingSr;
+  if (!Number.isFinite(startingSr)) {
+    const matchSum = oldMatches.reduce((sum, m) => sum + Number(m.srChange || 0), 0);
+    startingSr = Math.max(0, Number(op.sr || 0) - matchSum);
+  }
+  return {
+    username: op.username || 'Player',
+    avatar: op.avatar || null,
+    language: op.language || currentLang,
+    lastBackupAt: op.lastBackupAt || null,
+    mode: 'mp',
+    modes: {
+      mp: {
+        profile: {
+          sr: op.sr || 0, startingSr, srTarget: op.srTarget || 0,
+          goalRank: op.goalRank || '', top250: !!op.top250, top250Rank: op.top250Rank || null
+        },
+        matches: oldMatches,
+        seasons: Array.isArray(s.seasons) ? s.seasons : []
+      },
+      wz: emptyModeData()
+    }
+  };
+}
 
 function recomputeChain() {
-  const ordered = [...store.matches].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-  let running = Number(store.profile.startingSr || 0);
+  const ordered = [...store.modes[store.mode].matches].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  let running = Number(store.modes[store.mode].profile.startingSr || 0);
   for (const m of ordered) {
     m.srBefore = running;
     running = Math.max(0, running + Number(m.srChange || 0));
     m.srAfter = running;
   }
-  store.profile.sr = running;
+  store.modes[store.mode].profile.sr = running;
 }
 
-let store = loadStore();
+let store = migrateStore(loadStore());
 let selectedResult = 'WIN', statRange = 'all';
 
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, ch => ({
@@ -340,7 +391,7 @@ function resetMatchForm() {
 }
 
 function startEditMatch(id) {
-  const m = store.matches.find(x => x.id === id);
+  const m = store.modes[store.mode].matches.find(x => x.id === id);
   if (!m) return;
   editingMatchId = id;
   selectedResult = m.result;
@@ -375,11 +426,11 @@ $('#saveMatch').onclick = () => {
     points: optNum('#points')
   };
   if (editingMatchId) {
-    const m = store.matches.find(x => x.id === editingMatchId);
+    const m = store.modes[store.mode].matches.find(x => x.id === editingMatchId);
     if (m) Object.assign(m, fields);
     toast(t('toast.matchUpdated'));
   } else {
-    store.matches.unshift({
+    store.modes[store.mode].matches.unshift({
       id: uid(), ...fields,
       rankAtMatch: '',
       createdAt: new Date().toISOString()
@@ -388,7 +439,7 @@ $('#saveMatch').onclick = () => {
   }
   recomputeChain();
   // fill rankAtMatch for the affected match using its own srBefore now that the chain is computed
-  const affected = editingMatchId ? store.matches.find(x => x.id === editingMatchId) : store.matches[0];
+  const affected = editingMatchId ? store.modes[store.mode].matches.find(x => x.id === editingMatchId) : store.modes[store.mode].matches[0];
   if (affected) { const rk = rankForSr(affected.srBefore); affected.rankAtMatch = rk.division ? `${rk.name} ${rk.division}` : rk.name; }
   saveStore(store);
   resetMatchForm();
@@ -408,6 +459,20 @@ $('#sortToggle').onclick = () => {
   renderMatches();
 };
 
+/* ---------- Settings: mode switch (Multiplayer Ranked / Warzone Ranked) ---------- */
+function updateModeTabs() {
+  $$('.mode-tab').forEach(b => b.classList.toggle('active', b.dataset.mode === store.mode));
+}
+$$('.mode-tab').forEach(b => b.onclick = () => {
+  if (store.mode === b.dataset.mode) return;
+  store.mode = b.dataset.mode;
+  saveStore(store);
+  resetMatchForm();
+  updateModeTabs();
+  render();
+  drawHistory();
+});
+
 /* ---------- Settings: profile, avatar ---------- */
 $('#top250Toggle').onchange = () => {
   $('#top250RankWrap').classList.toggle('hidden', !$('#top250Toggle').checked);
@@ -415,10 +480,10 @@ $('#top250Toggle').onchange = () => {
 
 $('#saveProfile').onclick = () => {
   const newSr = Math.max(0, Math.trunc(Number($('#profileSr').value) || 0));
-  const matchSum = store.matches.reduce((s, m) => s + Number(m.srChange || 0), 0);
-  store.profile.startingSr = Math.max(0, newSr - matchSum);
-  store.profile.top250 = $('#top250Toggle').checked;
-  store.profile.top250Rank = store.profile.top250 ? Math.min(250, Math.max(1, Math.trunc(Number($('#top250Rank').value)) || 250)) : null;
+  const matchSum = store.modes[store.mode].matches.reduce((s, m) => s + Number(m.srChange || 0), 0);
+  store.modes[store.mode].profile.startingSr = Math.max(0, newSr - matchSum);
+  store.modes[store.mode].profile.top250 = $('#top250Toggle').checked;
+  store.modes[store.mode].profile.top250Rank = store.modes[store.mode].profile.top250 ? Math.min(250, Math.max(1, Math.trunc(Number($('#top250Rank').value)) || 250)) : null;
   recomputeChain();
   saveStore(store);
   toast(t('toast.profileSaved')); render();
@@ -426,7 +491,7 @@ $('#saveProfile').onclick = () => {
 
 $('#profileName').addEventListener('change', () => {
   const name = $('#profileName').value.trim();
-  if (name) { store.profile.username = name.slice(0, 24); saveStore(store); render(); }
+  if (name) { store.username = name.slice(0, 24); saveStore(store); render(); }
 });
 
 function resizeImageToDataUrl(file, maxSize, cb) {
@@ -448,7 +513,7 @@ $('#uploadAvatar').onclick = () => {
   if (!f) return toast(t('toast.pickImage'));
   if (f.size > 8 * 1024 * 1024) return toast(t('toast.imageTooBig'));
   resizeImageToDataUrl(f, 320, dataUrl => {
-    store.profile.avatar = dataUrl;
+    store.avatar = dataUrl;
     saveStore(store);
     toast(t('toast.avatarUpdated')); render();
   });
@@ -456,20 +521,20 @@ $('#uploadAvatar').onclick = () => {
 
 /* ---------- Goals ---------- */
 $('#saveGoal').onclick = () => {
-  store.profile.goalRank = $('#goalRankInput').value.trim().slice(0, 40);
-  store.profile.srTarget = Math.max(0, Math.trunc(Number($('#goalSrInput').value) || 0));
+  store.modes[store.mode].profile.goalRank = $('#goalRankInput').value.trim().slice(0, 40);
+  store.modes[store.mode].profile.srTarget = Math.max(0, Math.trunc(Number($('#goalSrInput').value) || 0));
   saveStore(store);
   toast(t('toast.goalSaved')); render();
 };
 
 /* ---------- Export / Import / Reset ---------- */
 function exportData() {
-  store.profile.lastBackupAt = new Date().toISOString();
+  store.lastBackupAt = new Date().toISOString();
   saveStore(store);
   const blob = new Blob([JSON.stringify({ exportedAt: new Date().toISOString(), ...store }, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = `cod-ranked-tracker-${store.profile.username || 'backup'}.json`;
+  a.href = url; a.download = `cod-ranked-tracker-${store.username || 'backup'}.json`;
   document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(url);
   render();
@@ -484,8 +549,9 @@ $('#importFile').onchange = () => {
   reader.onload = e => {
     try {
       const data = JSON.parse(e.target.result);
-      if (!data.profile || !Array.isArray(data.matches)) throw new Error('ungültig');
-      store = { profile: data.profile, matches: data.matches, seasons: Array.isArray(data.seasons) ? data.seasons : [] };
+      const migrated = migrateStore(data);
+      if (!migrated || !migrated.modes) throw new Error('ungültig');
+      store = migrated;
       saveStore(store);
       toast(t('toast.restoreOk')); render();
     } catch { toast(t('toast.restoreBad')); }
@@ -501,17 +567,17 @@ $('#resetBtn').onclick = () => {
 
 /* ---------- Seasons ---------- */
 $('#startSeason').onclick = () => {
-  const label = $('#seasonLabel').value.trim().slice(0, 40) || `Season ${(store.seasons || []).length + 1}`;
+  const label = $('#seasonLabel').value.trim().slice(0, 40) || `Season ${(store.modes[store.mode].seasons || []).length + 1}`;
   if (!confirm(t('confirm.newSeason', { label }))) return;
-  store.seasons = store.seasons || [];
-  store.seasons.push({ id: uid(), label, startedAt: new Date().toISOString() });
+  store.modes[store.mode].seasons = store.modes[store.mode].seasons || [];
+  store.modes[store.mode].seasons.push({ id: uid(), label, startedAt: new Date().toISOString() });
   $('#seasonLabel').value = '';
   saveStore(store);
   toast(t('toast.seasonStarted')); render();
 };
 
 function renderSeasons() {
-  const seasons = store.seasons || [];
+  const seasons = store.modes[store.mode].seasons || [];
   $('#seasonList').innerHTML = seasons.length
     ? seasons.slice().reverse().map(s => `<div class="muted" style="font-size:12px;margin-bottom:4px">${escapeHtml(s.label)} — ${t('settings.seasonSince')} ${new Date(s.startedAt).toLocaleDateString(locale())}</div>`).join('')
     : `<div class="muted" style="font-size:12px">${t('settings.seasonNone')}</div>`;
@@ -524,7 +590,7 @@ $('#seasonFilter').onchange = () => renderStats();
 
 function matchesInSeason(matches, seasonId) {
   if (seasonId === 'all') return matches;
-  const seasons = (store.seasons || []).slice().sort((a, b) => new Date(a.startedAt) - new Date(b.startedAt));
+  const seasons = (store.modes[store.mode].seasons || []).slice().sort((a, b) => new Date(a.startedAt) - new Date(b.startedAt));
   const idx = seasons.findIndex(s => s.id === seasonId);
   if (idx < 0) return matches;
   const start = new Date(seasons[idx].startedAt);
@@ -580,7 +646,7 @@ function computeStats(matches) {
 }
 function getStats(range) {
   const seasonId = $('#seasonFilter') ? $('#seasonFilter').value : 'all';
-  const all = matchesInSeason(store.matches, seasonId);
+  const all = matchesInSeason(store.modes[store.mode].matches, seasonId);
   const now = new Date();
   const todayKey = localDateKey(now);
   const todayMatches = all.filter(m => localDateKey(m.createdAt) === todayKey);
@@ -602,9 +668,9 @@ function getStats(range) {
 
 /* ---------- Delete match (with SR chain recompute) ---------- */
 function deleteMatch(id) {
-  const idx = store.matches.findIndex(m => m.id === id);
+  const idx = store.modes[store.mode].matches.findIndex(m => m.id === id);
   if (idx < 0) return;
-  store.matches.splice(idx, 1);
+  store.modes[store.mode].matches.splice(idx, 1);
   recomputeChain();
   saveStore(store);
   if (editingMatchId === id) resetMatchForm();
@@ -626,12 +692,13 @@ function lightenHex(hex, amount) {
 }
 
 function render() {
-  const p = store.profile;
-  const av = p.avatar || avatarFallback;
+  updateModeTabs();
+  const p = store.modes[store.mode].profile;
+  const av = store.avatar || avatarFallback;
   $('#sideAvatar').src = av; $('#profileAvatar').src = av;
-  $('#sideName').textContent = p.username;
-  $('#helloName').textContent = p.username;
-  $('#profileName').value = p.username;
+  $('#sideName').textContent = store.username;
+  $('#helloName').textContent = store.username;
+  $('#profileName').value = store.username;
 
   function top250Icon(rank) {
     if (rank === 1) return 'icons/ranks/Platz_1.png';
@@ -679,7 +746,7 @@ function render() {
 
   // Ziel-Rechner: Matches bis zum Ziel, basierend auf Ø SR/Match (letzte 20 Matches)
   if (p.srTarget && p.srTarget > p.sr) {
-    const recent = store.matches.slice(0, 20);
+    const recent = store.modes[store.mode].matches.slice(0, 20);
     const avgRecent = recent.length ? recent.reduce((s2, m) => s2 + Number(m.srChange || 0), 0) / recent.length : 0;
     if (avgRecent > 0) {
       const needed = Math.ceil((p.srTarget - p.sr) / avgRecent);
@@ -692,9 +759,9 @@ function render() {
   }
 
   // Backup-Erinnerung
-  const lastBackup = p.lastBackupAt ? new Date(p.lastBackupAt) : null;
+  const lastBackup = store.lastBackupAt ? new Date(store.lastBackupAt) : null;
   const daysSince = lastBackup ? Math.floor((Date.now() - lastBackup.getTime()) / 86400000) : null;
-  if (store.matches.length > 0 && (daysSince === null || daysSince >= 14)) {
+  if (store.modes[store.mode].matches.length > 0 && (daysSince === null || daysSince >= 14)) {
     $('#backupWarning').classList.remove('hidden');
     $('#backupWarning').textContent = daysSince === null
       ? t('backup.warnNever')
@@ -707,7 +774,7 @@ function render() {
   renderSeasons();
   renderStats();
   renderMatches();
-  draw($('#chart'), store.matches.slice(0, 12).slice().reverse());
+  draw($('#chart'), store.modes[store.mode].matches.slice(0, 12).slice().reverse());
 }
 
 function renderStats() {
@@ -740,7 +807,7 @@ function renderMatches() {
     if (Number.isFinite(m.points)) parts.push(t('match.pointsShort', { n: m.points.toLocaleString(locale()) }));
     return parts.join(' · ');
   };
-  let list = store.matches.filter(m => matchFilter === 'all' || (matchFilter === 'win' && m.result === 'WIN') || (matchFilter === 'loss' && m.result === 'LOSS'));
+  let list = store.modes[store.mode].matches.filter(m => matchFilter === 'all' || (matchFilter === 'win' && m.result === 'WIN') || (matchFilter === 'loss' && m.result === 'LOSS'));
   list = list.slice().sort((a, b) => matchSort === 'desc' ? new Date(b.createdAt) - new Date(a.createdAt) : new Date(a.createdAt) - new Date(b.createdAt));
   const html = list.map(m => `
     <div class="match-row">
@@ -760,7 +827,7 @@ function renderMatches() {
   $$('.edit').forEach(b => b.onclick = () => startEditMatch(b.dataset.id));
 }
 
-function drawHistory() { draw($('#historyChart'), store.matches.slice().reverse()); }
+function drawHistory() { draw($('#historyChart'), store.modes[store.mode].matches.slice().reverse()); }
 
 function draw(c, data) {
   const ctx = c.getContext('2d'), w = c.width, h = c.height;
@@ -852,17 +919,11 @@ translateStatic();
 
 $('#languageSelect').onchange = () => {
   setLanguage($('#languageSelect').value);
-  if (store && store.profile) { store.profile.language = currentLang; saveStore(store); }
+  if (store && store.modes) { store.language = currentLang; saveStore(store); }
 };
 
-if (store && store.profile) {
-  // Migration: older saves don't have startingSr/seasons - derive without changing the displayed SR
-  if (!Number.isFinite(store.profile.startingSr)) {
-    const matchSum = (store.matches || []).reduce((s, m) => s + Number(m.srChange || 0), 0);
-    store.profile.startingSr = Math.max(0, Number(store.profile.sr || 0) - matchSum);
-  }
-  if (!Array.isArray(store.seasons)) store.seasons = [];
-  if (store.profile.language === 'en' || store.profile.language === 'de') currentLang = store.profile.language;
+if (store && store.modes) {
+  if (store.language === 'en' || store.language === 'de') currentLang = store.language;
   translateStatic();
   if ($('#languageSelect')) $('#languageSelect').value = currentLang;
   saveStore(store);

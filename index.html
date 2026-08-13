@@ -170,8 +170,16 @@
             </select>
           </div>
           <div class="panel">
+            <h2 data-i18n="settings.modeTitle">Modus</h2>
+            <p class="muted" data-i18n="settings.modeBody">Multiplayer Ranked und Warzone Ranked haben getrennte SR, Ränge, Ziele, Matches und Statistiken. Wähle, welchen Modus du gerade trackst.</p>
+            <div class="tabs" id="modeTabs" style="display:flex;gap:8px">
+              <button class="stat-tab mode-tab" data-mode="mp" data-i18n="settings.modeMp">Multiplayer Ranked</button>
+              <button class="stat-tab mode-tab" data-mode="wz" data-i18n="settings.modeWz">Warzone Ranked</button>
+            </div>
+          </div>
+          <div class="panel">
             <h2 data-i18n="settings.rankedTitle">Ranked-Profil</h2>
-            <p class="muted" data-i18n="settings.rankedBody">Rang und Division werden automatisch aus deiner SR berechnet (Bo7-Ranked-System).</p>
+            <p class="muted" data-i18n="settings.rankedBody">Rang und Division werden automatisch aus deiner SR berechnet.</p>
             <label data-i18n="settings.currentSr">Aktuelle SR<input id="profileSr" type="number" min="0"/></label>
             <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#a7acb8;cursor:pointer">
               <input id="top250Toggle" type="checkbox" style="width:auto"/>
@@ -181,6 +189,13 @@
             <button id="saveProfile" class="primary" data-i18n="settings.saveProfile">Profil speichern</button>
           </div>
           <div class="panel">
+            <h2 data-i18n="settings.seasonTitle">Season</h2>
+            <p class="muted" data-i18n="settings.seasonBody">Wenn eine neue CoD-Season deine SR zurücksetzt, starte hier eine neue Season, damit alte und neue Werte in der Statistik getrennt bleiben.</p>
+            <div id="seasonList" style="margin-bottom:12px"></div>
+            <label data-i18n="settings.seasonLabel">Name der neuen Season<input id="seasonLabel" placeholder="z. B. Season 6" data-i18n-placeholder="settings.seasonPh"/></label>
+            <button id="startSeason" class="primary" data-i18n="settings.seasonStart">Neue Season starten</button>
+          </div>
+          <div class="panel">
             <h2 data-i18n="settings.backupTitle">Daten sichern &amp; wiederherstellen</h2>
             <p class="muted" data-i18n="settings.backupBody">Alles liegt nur in diesem Browser. Lösch niemals den Browser-Speicher, ohne vorher eine Sicherung herunterzuladen.</p>
             <button id="exportBtn2" class="ghost" data-i18n="settings.backupDownload">Sicherung herunterladen</button>
@@ -188,13 +203,6 @@
             <label style="display:block;margin-top:14px;font-size:12px;color:var(--muted)" data-i18n="settings.backupRestore">Sicherung wiederherstellen
               <input id="importFile" type="file" accept="application/json" style="display:block;margin-top:6px"/>
             </label>
-          </div>
-          <div class="panel">
-            <h2 data-i18n="settings.seasonTitle">Season</h2>
-            <p class="muted" data-i18n="settings.seasonBody">Wenn eine neue CoD-Season deine SR zurücksetzt, starte hier eine neue Season, damit alte und neue Werte in der Statistik getrennt bleiben.</p>
-            <div id="seasonList" style="margin-bottom:12px"></div>
-            <label data-i18n="settings.seasonLabel">Name der neuen Season<input id="seasonLabel" placeholder="z. B. Season 6" data-i18n-placeholder="settings.seasonPh"/></label>
-            <button id="startSeason" class="primary" data-i18n="settings.seasonStart">Neue Season starten</button>
           </div>
           <div class="panel">
             <h2 data-i18n="settings.resetTitle">Zurücksetzen</h2>
@@ -237,6 +245,8 @@
         <p data-i18n="help.p6">Alles wird nur lokal auf diesem Gerät gespeichert. Lösch niemals den Browser-Speicher, ohne vorher unter Einstellungen eine Sicherung herunterzuladen.</p>
         <h3 data-i18n="help.h7">Top 250</h3>
         <p data-i18n="help.p7">Bist du gerade in den Top 250? Geh zu Einstellungen → Ranked-Profil, aktiviere "Ich bin aktuell in den Top 250", trag deine Platzierung ein und speichere. Dann zeigt die App automatisch das passende goldene Top-250-Icon statt des normalen Rangs.</p>
+        <h3 data-i18n="help.h12">Multiplayer / Warzone Modus</h3>
+        <p data-i18n="help.p12">Unter Einstellungen → Modus schaltest du zwischen Multiplayer Ranked und Warzone Ranked um. Das sind zwei komplett getrennte Profile: jeweils eigene SR, Rang, Ziel, Match-Verlauf und Statistik. Alle Seiten zeigen automatisch die Daten des gerade gewählten Modus.</p>
         <h3 data-i18n="help.h8">Sprache</h3>
         <p data-i18n="help.p8">Unter Einstellungen kannst du zwischen Deutsch und Englisch wechseln. Deine Wahl wird gespeichert.</p>
         <h3 data-i18n="help.h9">Match bearbeiten</h3>
