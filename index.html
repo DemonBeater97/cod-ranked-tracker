@@ -46,7 +46,7 @@
         <div class="header-actions">
           <button id="exportBtn" class="ghost header-btn"><i class="ic">⇩</i> <span data-i18n="header.backup">Daten sichern</span></button>
           <button id="helpBtn" class="icon-btn" title="Hilfe" data-i18n-title="header.helpTitle">?</button>
-          <button id="settingsBtn" class="icon-btn" title="Einstellungen" data-i18n-title="header.settingsTitle">⚙</button>
+          <button id="settingsBtn" class="icon-btn" title="Einstellungen" data-i18n-title="header.settingsTitle" style="position:relative">⚙<span id="updateDot" class="hidden" style="position:absolute;top:2px;right:2px;width:9px;height:9px;border-radius:50%;background:#e5484d;border:2px solid var(--bg,#0d0d10)"></span></button>
           <button id="mobileMenu" class="mobile-menu">☰</button>
         </div>
       </header>
@@ -153,6 +153,11 @@
 
       <section id="settings" class="page">
         <div class="profile-grid">
+          <div class="panel">
+            <h2 data-i18n="settings.updatesTitle">Updates</h2>
+            <p class="muted" data-i18n="settings.updatesBody">Was sich zuletzt geändert hat.</p>
+            <div id="updatesList"></div>
+          </div>
           <div class="panel avatar-panel">
             <h2 data-i18n="settings.avatarTitle">Profilbild &amp; Name</h2>
             <img id="profileAvatar" class="profile-avatar" alt="" />

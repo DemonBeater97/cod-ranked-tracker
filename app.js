@@ -48,6 +48,7 @@ const I18N = {
     'settings.currentSr': 'Aktuelle SR', 'settings.saveProfile': 'Profil speichern',
     'settings.top250Toggle': 'Ich bin aktuell in den Top 250',
     'settings.top250Rank': 'Meine Platzierung (1–250)',
+    'settings.updatesTitle': 'Updates', 'settings.updatesBody': 'Was sich zuletzt geändert hat.',
     'settings.backupTitle': 'Daten sichern & wiederherstellen',
     'settings.backupBody': 'Alles liegt nur in diesem Browser. Lösch niemals den Browser-Speicher, ohne vorher eine Sicherung herunterzuladen.',
     'settings.backupDownload': 'Sicherung herunterladen', 'settings.backupRestore': 'Sicherung wiederherstellen',
@@ -130,6 +131,7 @@ const I18N = {
     'settings.currentSr': 'Current SR', 'settings.saveProfile': 'Save profile',
     'settings.top250Toggle': "I'm currently in the Top 250",
     'settings.top250Rank': 'My placement (1–250)',
+    'settings.updatesTitle': 'Updates', 'settings.updatesBody': "What's changed recently.",
     'settings.backupTitle': 'Backup & restore',
     'settings.backupBody': 'Everything lives only in this browser. Never clear browser storage without downloading a backup first.',
     'settings.backupDownload': 'Download backup', 'settings.backupRestore': 'Restore backup',
@@ -197,6 +199,45 @@ function setLanguage(lang) {
   if (store && store.modes) render();
 }
 const locale = () => currentLang === 'en' ? 'en-US' : 'de-DE';
+
+/* ---------- Changelog / Updates ---------- */
+const CHANGELOG = [
+  { id: '2026-08-22', date: '22.08.2026', items: [
+    'Neue Rang-Embleme für alle Stufen (Bronze bis Iridescent)',
+    'Überarbeitete Top-250-Icons',
+    'Neue Update-Anzeige in den Einstellungen'
+  ]},
+  { id: '2026-08-13', date: '13.08.2026', items: [
+    'Modus-Schalter zwischen Multiplayer Ranked und Warzone Ranked',
+    'Getrennte SR-Rang-Tabellen für Multiplayer und Warzone'
+  ]}
+];
+const LAST_SEEN_UPDATE_KEY = 'crt_last_seen_update';
+
+function renderUpdates() {
+  const list = $('#updatesList');
+  if (!list) return;
+  list.innerHTML = CHANGELOG.map(entry => `
+    <div style="margin-bottom:12px">
+      <strong style="font-size:12px;color:var(--muted)">${entry.date}</strong>
+      <ul style="margin:4px 0 0 18px;padding:0">
+        ${entry.items.map(i => `<li style="margin-bottom:2px">${i}</li>`).join('')}
+      </ul>
+    </div>
+  `).join('');
+}
+function updateUpdateDot() {
+  const dot = $('#updateDot');
+  if (!dot) return;
+  const lastSeen = localStorage.getItem(LAST_SEEN_UPDATE_KEY);
+  const latest = CHANGELOG[0]?.id;
+  dot.classList.toggle('hidden', !latest || lastSeen === latest);
+}
+function markUpdatesSeen() {
+  const latest = CHANGELOG[0]?.id;
+  if (latest) localStorage.setItem(LAST_SEEN_UPDATE_KEY, latest);
+  updateUpdateDot();
+}
 
 /* ---------- Local storage layer (replaces the server API entirely) ---------- */
 const STORE_KEY = 'crt_local_v1';
@@ -361,6 +402,7 @@ function showPage(page) {
   $('#moreSheet').classList.remove('open');
   if (page === 'history') drawHistory();
   if (page === 'stats') renderStats();
+  if (page === 'settings') { renderUpdates(); markUpdatesSeen(); }
 }
 $$('.nav').forEach(b => b.onclick = () => showPage(b.dataset.page));
 $$('.bnav[data-page]').forEach(b => b.onclick = () => showPage(b.dataset.page));
@@ -695,6 +737,7 @@ function enterApp() {
   $('#setupView').classList.add('hidden');
   $('#appView').classList.remove('hidden');
   render();
+  updateUpdateDot();
 }
 
 function lightenHex(hex, amount) {
