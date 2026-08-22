@@ -196,20 +196,28 @@ function setLanguage(lang) {
   currentLang = (lang === 'en') ? 'en' : 'de';
   if ($('#languageSelect')) $('#languageSelect').value = currentLang;
   translateStatic();
+  if ($('#updatesList')) renderUpdates();
   if (store && store.modes) render();
 }
 const locale = () => currentLang === 'en' ? 'en-US' : 'de-DE';
 
 /* ---------- Changelog / Updates ---------- */
 const CHANGELOG = [
-  { id: '2026-08-22', date: '22.08.2026', items: [
+  { id: '2026-08-22', date: '22.08.2026', items_de: [
     'Neue Rang-Embleme für alle Stufen (Bronze bis Iridescent)',
     'Überarbeitete Top-250-Icons',
     'Neue Update-Anzeige in den Einstellungen'
+  ], items_en: [
+    'New rank emblems for all tiers (Bronze to Iridescent)',
+    'Redesigned Top 250 icons',
+    'New update notice in settings'
   ]},
-  { id: '2026-08-13', date: '13.08.2026', items: [
+  { id: '2026-08-13', date: '13.08.2026', items_de: [
     'Modus-Schalter zwischen Multiplayer Ranked und Warzone Ranked',
     'Getrennte SR-Rang-Tabellen für Multiplayer und Warzone'
+  ], items_en: [
+    'Mode switch between Multiplayer Ranked and Warzone Ranked',
+    'Separate SR rank tables for Multiplayer and Warzone'
   ]}
 ];
 const LAST_SEEN_UPDATE_KEY = 'crt_last_seen_update';
@@ -217,11 +225,12 @@ const LAST_SEEN_UPDATE_KEY = 'crt_last_seen_update';
 function renderUpdates() {
   const list = $('#updatesList');
   if (!list) return;
+  const key = currentLang === 'en' ? 'items_en' : 'items_de';
   list.innerHTML = CHANGELOG.map(entry => `
     <div style="margin-bottom:12px">
       <strong style="font-size:12px;color:var(--muted)">${entry.date}</strong>
       <ul style="margin:4px 0 0 18px;padding:0">
-        ${entry.items.map(i => `<li style="margin-bottom:2px">${i}</li>`).join('')}
+        ${entry[key].map(i => `<li style="margin-bottom:2px">${i}</li>`).join('')}
       </ul>
     </div>
   `).join('');
